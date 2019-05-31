@@ -1,5 +1,7 @@
 package org.eok.medicalsupportsystem.model;
 
+import java.util.UUID;
+
 public class Patient {
 
 	public enum GenderEnum {
@@ -10,18 +12,39 @@ public class Patient {
 		WHITE, BLACK, ASIAN, HISPANIC, INDIAN
 	};
 
+	private UUID id;
 	private String firstName;
 	private String lastName;
 	private GenderEnum gender;
 	private int age;
 	private RaceEnum race;
 
+//	for reading from DB
+	public Patient(String id, String firstName, String lastName, String gender, int years, String race) {
+		this.id = UUID.fromString(id);
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.gender = GenderEnum.valueOf(gender);
+		this.age = years;
+		this.race = RaceEnum.valueOf(race);
+	}
+	
+//	for creating new object
 	public Patient(String firstName, String lastName, GenderEnum gender, int years, RaceEnum race) {
+		this.id = UUID.randomUUID();
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.gender = gender;
 		this.age = years;
 		this.race = race;
+	}
+
+	public UUID getId() {
+		return id;
+	}
+
+	public void setId(UUID id) {
+		this.id = id;
 	}
 
 	public String getFirstName() {
@@ -48,12 +71,12 @@ public class Patient {
 		this.gender = gender;
 	}
 
-	public int getYears() {
+	public int getAge() {
 		return age;
 	}
 
-	public void setYears(int years) {
-		this.age = years;
+	public void setAge(int age) {
+		this.age = age;
 	}
 
 	public RaceEnum getRace() {
