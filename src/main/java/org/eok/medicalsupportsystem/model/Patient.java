@@ -2,19 +2,27 @@ package org.eok.medicalsupportsystem.model;
 
 public class Patient {
 
-	enum GenderEnum {
+	public enum GenderEnum {
 		MALE, FEMALE
 	};
 
-	enum RaceEnum {
-		WHITE, BLACK, YELLOW
+	public enum RaceEnum {
+		WHITE, BLACK, ASIAN, HISPANIC, INDIAN
 	};
 
 	private String firstName;
 	private String lastName;
 	private GenderEnum gender;
-	private int years;
+	private int age;
 	private RaceEnum race;
+
+	public Patient(String firstName, String lastName, GenderEnum gender, int years, RaceEnum race) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.gender = gender;
+		this.age = years;
+		this.race = race;
+	}
 
 	public String getFirstName() {
 		return firstName;
@@ -41,11 +49,11 @@ public class Patient {
 	}
 
 	public int getYears() {
-		return years;
+		return age;
 	}
 
 	public void setYears(int years) {
-		this.years = years;
+		this.age = years;
 	}
 
 	public RaceEnum getRace() {
@@ -56,4 +64,8 @@ public class Patient {
 		this.race = race;
 	}
 
+	@Override
+	public String toString() {
+		return this.lastName + " " + this.firstName;
+	}
 }

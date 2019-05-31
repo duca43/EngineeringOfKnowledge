@@ -15,6 +15,40 @@
   </properties>
 
   <dependencies>
+  	<dependency>
+	    <groupId>net.sf.jpf</groupId>
+	    <artifactId>jpf</artifactId>
+	    <version>1.5</version>
+	</dependency>
+	
+	<dependency>
+	    <groupId>commons-logging</groupId>
+	    <artifactId>commons-logging</artifactId>
+	    <version>1.0.4</version>
+	</dependency>
+		  	
+  	<dependency>
+	    <groupId>org.eok.medicalsupportsystem</groupId>
+	    <artifactId>jiprolog</artifactId>
+	    <version>4.1.6.1</version>
+	    <scope>system</scope>
+	    <systemPath>${project.basedir}/lib/jiprolog-4.1.6.1.jar</systemPath>
+	</dependency>
+	
+	<dependency>
+	    <groupId>org.eok.medicalsupportsystem</groupId>
+	    <artifactId>unbbayes</artifactId>
+	    <version>4.22.18</version>
+	    <scope>system</scope>
+	    <systemPath>${project.basedir}/lib/unbbayes-4.22.18.jar</systemPath>
+	</dependency>
+	
+	<dependency>
+	    <groupId>org.swinglabs</groupId>
+	    <artifactId>swingx</artifactId>
+	    <version>1.6.1</version>
+	</dependency>
+  
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>

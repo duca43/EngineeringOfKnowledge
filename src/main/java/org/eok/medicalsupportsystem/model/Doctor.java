@@ -11,6 +11,12 @@ public class Doctor {
 	private String lastName;
 	private List<Patient> patients = new ArrayList<Patient>();
 	
+	public Doctor(String username, String password, String firstName, String lastName) {
+		this.username = username;
+		this.password = password;
+		this.firstName = firstName;
+		this.lastName = lastName;
+	}
 	public String getUsername() {
 		return username;
 	}
@@ -36,6 +42,9 @@ public class Doctor {
 		this.lastName = lastName;
 	}
 	public List<Patient> getPatients() {
+		if (patients == null) {
+			patients = new ArrayList<Patient>();			
+		}
 		return patients;
 	}
 }
