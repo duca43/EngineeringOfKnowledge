@@ -9,7 +9,6 @@ import org.eok.medicalsupportsystem.model.CbReasonerData;
 import ucm.gaia.jcolibri.casebase.LinealCaseBase;
 import ucm.gaia.jcolibri.cbraplications.StandardCBRApplication;
 import ucm.gaia.jcolibri.cbrcore.Attribute;
-import ucm.gaia.jcolibri.cbrcore.CBRCase;
 import ucm.gaia.jcolibri.cbrcore.CBRCaseBase;
 import ucm.gaia.jcolibri.cbrcore.CBRQuery;
 import ucm.gaia.jcolibri.cbrcore.Connector;
@@ -27,7 +26,7 @@ public class CbReasonerApi implements StandardCBRApplication {
 	private Connector connector;
 	private CBRCaseBase caseBase;
 	private NNConfig simConfig;
-	private List<String> therapies;
+	private List<String> results;
 	private String FILE_NAME;
 	
 	
@@ -36,7 +35,7 @@ public class CbReasonerApi implements StandardCBRApplication {
 	}
 
 	public void configure() throws ExecutionException {
-		therapies = new ArrayList<>();
+		results = new ArrayList<>();
 		connector = new CsvConnector(FILE_NAME);
 		caseBase = new LinealCaseBase(); 
 		simConfig = new NNConfig();
@@ -50,7 +49,7 @@ public class CbReasonerApi implements StandardCBRApplication {
 
 	public CBRCaseBase preCycle() throws ExecutionException {
 		caseBase.init(connector);
-		Collection<CBRCase> cases = caseBase.getCases();
+//		Collection<CBRCase> cases = caseBase.getCases();
 //		for (CBRCase c : cases)
 //			System.out.println(c.getDescription());
 		return caseBase;
@@ -61,7 +60,9 @@ public class CbReasonerApi implements StandardCBRApplication {
 		eval = SelectCases.selectTopKRR(eval, 5);
 		for (RetrievalResult nse : eval) {
 			CbReasonerData cbReasonerResult = (CbReasonerData) nse.get_case().getDescription();
-			this.therapies.add(cbReasonerResult.getResult());
+			if(!this.results.contains(cbReasonerResult.getResult())) {
+				this.results.add(cbReasonerResult.getResult());				
+			}
 		}
 	}
 
@@ -69,7 +70,11 @@ public class CbReasonerApi implements StandardCBRApplication {
 
 	}
 
-	public List<String> getTherapies(CbReasonerData description) {
+	/**
+	 * @param example for finding similar cases in case-based reasoning
+	 * @return List of 5 found most similar cases 
+	 */
+	public List<String> getResults(CbReasonerData description) {
 		try {
 			this.configure();
 			this.preCycle();
@@ -84,7 +89,7 @@ public class CbReasonerApi implements StandardCBRApplication {
 			e.printStackTrace();
 		}
 
-		return this.therapies;
+		return this.results;
 	}
 
 }
