@@ -26,14 +26,14 @@ public class BayesReasonerApi {
 	private List<ProbabilisticNetwork> networks = new ArrayList<ProbabilisticNetwork>();
  
 	public BayesReasonerApi(){
-		List<Disease> diseases = AppSingleton.getInstance().getPrologConsultationApi().getDiseases();
+		List<Disease> diseases = AppSingleton.getInstance().getPrologConsultationApi().getDiseasesFromPrologBase();
 		for(int i = 0; i < diseases.size(); i++){
 			ProbabilisticNetwork net = new ProbabilisticNetwork("disease-network" + (i+1));
 			ProbabilisticNode diseaseNode = this.createDiseaseNode(diseases.get(i).getName(),diseases.get(i).getProb());
 			net.addNode(diseaseNode);
-			for(Influence influence : AppSingleton.getInstance().getPrologConsultationApi().getInfluences()){
+			for(Influence influence : AppSingleton.getInstance().getPrologConsultationApi().getInfluencesFromPrologBase()){
 				if (influence.getDiseaseName().equals(diseases.get(i).getName())){
-					for(Symptom symptom : AppSingleton.getInstance().getPrologConsultationApi().getSymptoms()){
+					for(Symptom symptom : AppSingleton.getInstance().getPrologConsultationApi().getSymptomsFromPrologBase().values()){
 						if (influence.getSymptomName().equals(symptom.getName())){
 							try {
 								ProbabilisticNode symptomNode = this.createSymptomNode(symptom.getName(), diseaseNode, influence.getProb(), symptom.getProb(), net);
@@ -103,7 +103,7 @@ public class BayesReasonerApi {
 					network.updateEvidences();
 					for (Node node: network.getNodes()){
 						if(node.getStateAt(0).equals(STATE_POSITIVE)){
-							Disease disease = new Disease(node.getName(),((ProbabilisticNode)node).getMarginalAt(0));
+							Disease disease = new Disease(node.getName(),((ProbabilisticNode)node).getMarginalAt(0), AppSingleton.getInstance().getPrologConsultationApi().filterNames(node.getName()));
 							diseases.add(disease);
 							break;
 						}

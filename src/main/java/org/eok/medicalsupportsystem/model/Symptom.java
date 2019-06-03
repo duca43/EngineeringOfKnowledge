@@ -4,11 +4,13 @@ public class Symptom {
 
 	private String name;
 	private float prob;
+	private String label;
 
-	public Symptom(String name, float prob) {
+	public Symptom(String name, float prob, String label) {
 		super();
 		this.name = name;
 		this.prob = prob;
+		this.label = label;
 	}
 
 	public String getName() {
@@ -27,8 +29,16 @@ public class Symptom {
 		this.prob = prob;
 	}
 
+	public String getLabel() {
+		return label;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
+	}
+	
 	@Override
 	public String toString() {
-		return this.name;
+		return this.label;
 	}
 }

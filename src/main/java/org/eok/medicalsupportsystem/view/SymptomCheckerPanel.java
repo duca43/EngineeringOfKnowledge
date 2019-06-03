@@ -3,8 +3,10 @@ package org.eok.medicalsupportsystem.view;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,9 +15,14 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
+import javax.swing.border.BevelBorder;
 import javax.swing.border.MatteBorder;
+import javax.swing.border.SoftBevelBorder;
 
 import org.eok.medicalsupportsystem.AppSingleton;
+import org.eok.medicalsupportsystem.controller.ProceedToDiseaseCalculationAction;
 import org.eok.medicalsupportsystem.model.Symptom;
 import org.jdesktop.swingx.JXButton;
 import org.jdesktop.swingx.JXLabel;
@@ -23,14 +30,15 @@ import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import org.jdesktop.swingx.autocomplete.ObjectToStringConverter;
 
 import net.miginfocom.swing.MigLayout;
-import javax.swing.JScrollPane;
 
 public class SymptomCheckerPanel extends JPanel {
 
 	private static final long serialVersionUID = 2862711375769048305L;
 	private JComboBox<Symptom> symptomSearch;
 	private Map<String, Symptom> choosenSymptomMap;
+	private Map<String, Symptom> allSymptomsMap;
 	private JPanel symptomItemsPanel;
+	private JPanel relatedPanel;
 
 	/**
 	 * Create the panel.
@@ -40,21 +48,22 @@ public class SymptomCheckerPanel extends JPanel {
 		setLayout(new MigLayout("", "[grow][grow][grow][][grow]", "[][14.00][][][grow][13.00][]"));
 		
 		JXLabel symptomCheckerMsg = new JXLabel();
-		symptomCheckerMsg.setFont(new Font("Comic Sans MS", Font.BOLD, 22));
+		symptomCheckerMsg.setFont(new Font("Comic Sans MS", Font.BOLD, 24));
 		symptomCheckerMsg.setText("Start your examination by checking patient symptoms");
 		add(symptomCheckerMsg, "cell 0 0 5 1,alignx center");
 		
 		symptomSearch = new JComboBox<>();
 		symptomCheckerMsg.setLabelFor(symptomSearch);
-		symptomSearch.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		symptomSearch.setFont(new Font("Comic Sans MS", Font.PLAIN, 17));
 		add(symptomSearch, "cell 1 2 2 1,growx");
 
-		List<Symptom> symptoms = AppSingleton.getInstance().getPrologConsultationApi().getSymptoms();
+		this.allSymptomsMap = AppSingleton.getInstance().getPrologConsultationApi().getSymptomsFromPrologBase();
+		List<Symptom> symptoms = new ArrayList<>(this.allSymptomsMap.values());
 		Symptom[] symptomArray = new Symptom[symptoms.size()];
 		symptomArray = symptoms.toArray(symptomArray);		
 		DefaultComboBoxModel<Symptom> comboBoxModel = new DefaultComboBoxModel<Symptom>(symptomArray);
-		symptomSearch.setModel(comboBoxModel);
-		symptomSearch.setSelectedIndex(-1);
+		this.symptomSearch.setModel(comboBoxModel);
+		this.symptomSearch.setSelectedIndex(-1);
 
 		AutoCompleteDecorator.decorate(symptomSearch, new ObjectToStringConverter() {
 
@@ -67,7 +76,27 @@ public class SymptomCheckerPanel extends JPanel {
 			}
 		});
 		
+		this.symptomSearch.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Symptom selectedSymptom = (Symptom) SymptomCheckerPanel.this.symptomSearch.getSelectedItem();
+				if (selectedSymptom != null) {
+					for (int i = SymptomCheckerPanel.this.relatedPanel.getComponentCount() - 1; i > 0; i--) {
+						SymptomCheckerPanel.this.relatedPanel.remove(i);
+					}
+					List<Symptom> similarSymptoms = AppSingleton.getInstance().getPrologConsultationApi().getSimilarSymptomsFromPrologBase(selectedSymptom);
+					for (Symptom similarSymptom : similarSymptoms) {
+						if (SymptomCheckerPanel.this.choosenSymptomMap.get(similarSymptom.getName()) == null) {
+							SymptomCheckerPanel.this.createRelatedSymptomLink(similarSymptom);							
+						}
+					}					
+				}
+			}
+		});
+		
 		JXButton btnAdd = new JXButton();
+		btnAdd.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		btnAdd.addActionListener(new ActionListener() {
 			
 			@Override
@@ -86,10 +115,15 @@ public class SymptomCheckerPanel extends JPanel {
 		
 		this.choosenSymptomMap = new HashMap<>();
 		
+		relatedPanel = new JPanel();
+		add(relatedPanel, "cell 1 3 3 1,alignx leading,aligny center");
+		relatedPanel.setLayout(new GridLayout(0, 4, 10, 0));
+		
 		JXLabel lblRelated = new JXLabel();
-		lblRelated.setFont(new Font("Comic Sans MS", Font.ITALIC, 15));
-		lblRelated.setText("Related: under construciton");
-		add(lblRelated, "cell 1 3 3 1");
+		lblRelated.setHorizontalAlignment(SwingConstants.CENTER);
+		relatedPanel.add(lblRelated);
+		lblRelated.setFont(new Font("Comic Sans MS", Font.ITALIC, 17));
+		lblRelated.setText("Related:");
 		
 		JScrollPane scrollPane = new JScrollPane();
 		add(scrollPane, "cell 1 4 3 1,grow");
@@ -98,15 +132,14 @@ public class SymptomCheckerPanel extends JPanel {
 		scrollPane.setViewportView(symptomItemsPanel);
 		symptomItemsPanel.setLayout(new MigLayout("wrap 2", "[grow,center]", "[]"));
 		
-		JXButton btnProceedForward = new JXButton(new ImageIcon("resources/images/proceed-icon.png"));
-		btnProceedForward.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
-		btnProceedForward.setText("Proceed forward");
+		JXButton btnProceedForward = new JXButton(new ProceedToDiseaseCalculationAction(this));
+		btnProceedForward.setFont(new Font("Comic Sans MS", Font.BOLD, 18));
 		add(btnProceedForward, "cell 1 6 3 1,alignx center");
 	}
 	
-	public void generateSymptomItem(Symptom symptom) {
+	private void generateSymptomItem(Symptom symptom) {
 		JXLabel lblSymptom = new JXLabel();
-		lblSymptom.setText(symptom.getName());
+		lblSymptom.setText(symptom.getLabel());
 		lblSymptom.setFont(new Font("Comic Sans MS", Font.PLAIN, 18));
 		symptomItemsPanel.add(lblSymptom);
 		JXButton btnRemoveSymtpom = new JXButton(new ImageIcon("resources/images/remove-icon.png"));
@@ -124,5 +157,36 @@ public class SymptomCheckerPanel extends JPanel {
 			}
 		});
 		symptomItemsPanel.add(btnRemoveSymtpom);
+	}
+	
+	private void createRelatedSymptomLink(Symptom symptom) {
+		JXButton button = new JXButton(symptom.getLabel());
+		button.setForeground(Color.RED);
+		button.setName(symptom.getName());
+		button.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
+		button.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
+		button.setFocusPainted(false);
+		button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		button.setHorizontalAlignment(SwingConstants.CENTER);
+		button.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				SymptomCheckerPanel.this.choosenSymptomMap.put(symptom.getName(), symptom);
+				SymptomCheckerPanel.this.generateSymptomItem(symptom);
+				symptomSearch.setSelectedIndex(-1);
+				for (int i = SymptomCheckerPanel.this.relatedPanel.getComponentCount() - 1; i > 0; i--) {
+					if (SymptomCheckerPanel.this.relatedPanel.getComponent(i).getName().equals(button.getName())) {
+						SymptomCheckerPanel.this.relatedPanel.remove(i);
+						break;
+					}
+				}
+			}
+		});
+		relatedPanel.add(button);
+	}
+	
+	public List<Symptom> getChoosenSymptoms() {
+		return new ArrayList<>(this.choosenSymptomMap.values());
 	}
 }

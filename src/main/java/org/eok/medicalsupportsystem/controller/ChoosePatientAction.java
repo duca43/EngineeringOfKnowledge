@@ -6,6 +6,7 @@ import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 
 import org.eok.medicalsupportsystem.AppSingleton;
+import org.eok.medicalsupportsystem.view.MainDashboardPanel;
 import org.eok.medicalsupportsystem.view.PatientDashboardPanel;
 
 public class ChoosePatientAction extends AbstractAction {
@@ -20,13 +21,13 @@ public class ChoosePatientAction extends AbstractAction {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		AppSingleton.getInstance().setPatient(AppSingleton.getInstance().
-														   getAppFrame().
-														   getMainDashboardPanel().
-														   getPatientListPanel().
-														   getPatientListScrollPane().
-														   getPatientList().
-														   getSelectedPatient());
-		AppSingleton.getInstance().getAppFrame().setContentPane(new PatientDashboardPanel());
+		AppSingleton.getInstance().setPatient(((MainDashboardPanel)AppSingleton.getInstance().
+																			    getAppFrame().
+																			    getDashboardPanel()).
+																			    getPatientListPanel().
+																			    getPatientListScrollPane().
+																			    getPatientList().
+																			    getSelectedPatient());
+		AppSingleton.getInstance().getAppFrame().setDashboardPanel(new PatientDashboardPanel());
 	}
 }

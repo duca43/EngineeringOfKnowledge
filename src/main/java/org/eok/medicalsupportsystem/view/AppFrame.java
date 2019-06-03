@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 
 import javax.swing.ImageIcon;
+import javax.swing.JPanel;
 
 import org.jdesktop.swingx.JXFrame;
 
@@ -12,7 +13,7 @@ public class AppFrame extends JXFrame {
 	private static final long serialVersionUID = -1334335675796492704L;
 	private static final String MEDICAL_SUPPORT_SYSTEM = "Medical support system";
 	private static final Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
-	private MainDashboardPanel mainDashboardPanel;
+	private JPanel dashboardPanel;
 	private AppStatusBar statusBar;
 
 	public AppFrame() {
@@ -23,8 +24,8 @@ public class AppFrame extends JXFrame {
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
-		this.mainDashboardPanel = new MainDashboardPanel();
-		this.setContentPane(mainDashboardPanel);
+		this.dashboardPanel = new MainDashboardPanel();
+		this.setContentPane(dashboardPanel);
 		
 		this.statusBar = new AppStatusBar();
 		this.setStatusBar(statusBar);
@@ -34,11 +35,12 @@ public class AppFrame extends JXFrame {
 		return screenDimension;
 	}
 
-	public MainDashboardPanel getMainDashboardPanel() {
-		return mainDashboardPanel;
+	public JPanel getDashboardPanel() {
+		return dashboardPanel;
 	}
 
-	public void setMainDashboardPanelPanel(MainDashboardPanel homePanel) {
-		this.mainDashboardPanel = homePanel;
+	public void setDashboardPanel(JPanel dashboardPanel) {
+		this.dashboardPanel = dashboardPanel;
+		this.setContentPane(dashboardPanel);
 	}
 }

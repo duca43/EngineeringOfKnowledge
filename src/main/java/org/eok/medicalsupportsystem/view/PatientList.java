@@ -75,7 +75,7 @@ public class PatientList extends JXList implements org.eok.medicalsupportsystem.
 			public void valueChanged(ListSelectionEvent e) {
 				Patient patient = (Patient)PatientList.this.getSelectedValue();
 				if (patient != null) {
-					AppSingleton.getInstance().getAppFrame().getMainDashboardPanel().setPatientDetails(new PatientDetails(patient));					
+					((MainDashboardPanel)AppSingleton.getInstance().getAppFrame().getDashboardPanel()).setPatientDetails(new PatientDetails(patient));					
 				}
 			}
 		});

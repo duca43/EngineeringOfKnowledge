@@ -21,7 +21,6 @@ public class OpenMainDashboardAction extends AbstractAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		MainDashboardPanel dashboardPanel = new MainDashboardPanel();
-		AppSingleton.getInstance().getAppFrame().setContentPane(dashboardPanel);
-		AppSingleton.getInstance().getAppFrame().setMainDashboardPanelPanel(dashboardPanel);
+		AppSingleton.getInstance().getAppFrame().setDashboardPanel(dashboardPanel);
 	}
 }
