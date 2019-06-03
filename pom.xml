@@ -46,6 +46,22 @@
 	</dependency>
 	
 	<dependency>
+	    <groupId>org.eok.medicalsupportsystem</groupId>
+	    <artifactId>miglayout</artifactId>
+	    <version>15</version>
+	    <scope>system</scope>
+	    <systemPath>${project.basedir}/lib/miglayout15-swing.jar</systemPath>
+	</dependency>
+	
+	<dependency>
+	    <groupId>org.eok.medicalsupportsystem</groupId>
+	    <artifactId>jgoodies-forms</artifactId>
+	    <version>1.8.0</version>
+	    <scope>system</scope>
+	    <systemPath>${project.basedir}/lib/jgoodies-forms-1.8.0.jar</systemPath>
+	</dependency>
+	
+	<dependency>
 	    <groupId>org.swinglabs</groupId>
 	    <artifactId>swingx</artifactId>
 	    <version>1.6.1</version>

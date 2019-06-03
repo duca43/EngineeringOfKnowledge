@@ -14,4 +14,8 @@ public class PatientListScrollPane extends JScrollPane {
 		this.setViewportView(patientList);
 		this.setPreferredSize(new Dimension((int)(AppFrame.getScreenDimension().width / 8), 0));
 	}
+
+	public PatientList getPatientList() {
+		return patientList;
+	}
 }

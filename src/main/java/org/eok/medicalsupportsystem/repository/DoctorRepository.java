@@ -34,6 +34,29 @@ public class DoctorRepository extends AbstractRepository<Doctor> {
 		
 		return new Doctor(id, username, password, firstName, lastName);
 	}
+	
+	public Doctor findOneByUsername(String username) {
+		String queryString = 
+				"SELECT ?id	 ?password ?firstName ?lastName " + 
+				"WHERE {" + 
+				"	?id eok:username " + "\"" + username + "\"^^xsd:string;" + 
+				"  		eok:username ?username;" + 
+				"  		eok:password ?password;" + 
+				"  		eok:firstName ?firstName;" + 
+				"  		eok:lastName ?lastName." +
+				"}";
+		ResultSet results = executeQuery(queryString );
+		QuerySolution solution = results.nextSolution();
+			
+		String id = solution.getResource("id").getLocalName();
+		String password = solution.getLiteral("password").getString();
+		String firstName = solution.getLiteral("firstName").getString();
+		String lastName = solution.getLiteral("lastName").getString();
+		
+		System.out.println(id + " " + username + " " + password + " " + firstName + " " + lastName);
+		
+		return new Doctor(id, username, password, firstName, lastName);
+	}
 
 	@Override
 	public List<Doctor> findAll() {

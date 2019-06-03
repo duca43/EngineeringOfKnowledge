@@ -29,6 +29,6 @@ public class Symptom {
 
 	@Override
 	public String toString() {
-		return "Symptom [name=" + name + ", prob=" + prob + "]";
+		return this.name;
 	}
 }
