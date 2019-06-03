@@ -11,20 +11,21 @@ public class AppStatusBar extends JXStatusBar {
 	private JXStatusBar.Constraint fillConstraint;
 	private DateLabel dateLabel;
 	private JXLabel userInfoLabel;
+	private JXLabel patientInfoLabel;
 	
 	public AppStatusBar() {
 		this.fillConstraint = new JXStatusBar.Constraint(JXStatusBar.Constraint.ResizeBehavior.FILL);
-		initUserInfoLabel(fillConstraint);
-		initDateLabel(fillConstraint);
+		initUserInfoLabel();
+		initDateLabel();
 	}
 	
-	public void initDateLabel(JXStatusBar.Constraint constraint)
+	public void initDateLabel()
 	{	
 		this.dateLabel = new DateLabel();
-		this.add(this.dateLabel, constraint);	
+		this.add(this.dateLabel, this.fillConstraint);	
 	}
 	
-	public void initUserInfoLabel(JXStatusBar.Constraint constraint)
+	public void initUserInfoLabel()
 	{	
 		this.userInfoLabel = new JXLabel();
 		Doctor doctor = AppSingleton.getInstance().getDoctor();
@@ -34,6 +35,18 @@ public class AppStatusBar extends JXStatusBar {
 		msgBuilder.append(" ");
 		msgBuilder.append(doctor.getLastName());
 		this.userInfoLabel.setText(msgBuilder.toString());
-		this.add(this.userInfoLabel, constraint);	
+		this.add(this.userInfoLabel, this.fillConstraint);
 	}
+	
+//	public void addPatientInfoLabel() {
+//		this.patientInfoLabel = new JXLabel();
+//		Patient patient = AppSingleton.getInstance().getPatient();
+//		StringBuilder msgBuilder = new StringBuilder();
+//		msgBuilder.append("Current patient: ");
+//		msgBuilder.append(patient.getFirstName());
+//		msgBuilder.append(" ");
+//		msgBuilder.append(patient.getLastName());
+//		this.patientInfoLabel.setText(msgBuilder.toString());
+//		this.add(this.patientInfoLabel, this.fillConstraint);
+//	}
 }

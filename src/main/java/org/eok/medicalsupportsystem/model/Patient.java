@@ -2,7 +2,7 @@ package org.eok.medicalsupportsystem.model;
 
 import java.util.UUID;
 
-public class Patient {
+public class Patient extends Observable {
 
 	public enum GenderEnum {
 		MALE, FEMALE

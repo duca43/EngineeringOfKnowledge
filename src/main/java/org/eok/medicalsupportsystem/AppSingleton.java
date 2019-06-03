@@ -2,6 +2,7 @@ package org.eok.medicalsupportsystem;
 
 import org.eok.medicalsupportsystem.model.Doctor;
 import org.eok.medicalsupportsystem.model.Patient;
+import org.eok.medicalsupportsystem.prolog.PrologConsultationApi;
 import org.eok.medicalsupportsystem.view.AppFrame;
 
 public class AppSingleton {
@@ -10,6 +11,7 @@ public class AppSingleton {
 	private Doctor doctor;
 	private Patient patient;
 	private AppFrame appFrame;
+	private PrologConsultationApi prologConsultationApi;
 	
 	private AppSingleton() { }
 	
@@ -39,5 +41,13 @@ public class AppSingleton {
 
 	public void setPatient(Patient patient) {
 		this.patient = patient;
+	}
+
+	public PrologConsultationApi getPrologConsultationApi() {
+		return prologConsultationApi;
+	}
+
+	public void setPrologConsultationApi(PrologConsultationApi prologConsultationApi) {
+		this.prologConsultationApi = prologConsultationApi;
 	}
 }
