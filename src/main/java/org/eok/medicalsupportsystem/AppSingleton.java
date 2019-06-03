@@ -1,6 +1,7 @@
 package org.eok.medicalsupportsystem;
 
 import org.eok.medicalsupportsystem.bayes.BayesReasonerApi;
+import org.eok.medicalsupportsystem.cbr.CbReasonerApi;
 import org.eok.medicalsupportsystem.model.Doctor;
 import org.eok.medicalsupportsystem.model.Patient;
 import org.eok.medicalsupportsystem.prolog.PrologConsultationApi;
@@ -14,6 +15,8 @@ public class AppSingleton {
 	private AppFrame appFrame;
 	private PrologConsultationApi prologConsultationApi;
 	private BayesReasonerApi bayesReasonerApi;
+	private CbReasonerApi therapyCbReasonerApi;
+	private CbReasonerApi procedureCbReasonerApi;
 
 	private AppSingleton() {
 	}
@@ -61,4 +64,21 @@ public class AppSingleton {
 	public void setBayesReasonerApi(BayesReasonerApi bayesReasonerApi) {
 		this.bayesReasonerApi = bayesReasonerApi;
 	}
+
+	public CbReasonerApi getTherapyCbReasonerApi() {
+		return therapyCbReasonerApi;
+	}
+
+	public void setTherapyCbReasonerApi(CbReasonerApi therapyCbReasonerApi) {
+		this.therapyCbReasonerApi = therapyCbReasonerApi;
+	}
+
+	public CbReasonerApi getProcedureCbReasonerApi() {
+		return procedureCbReasonerApi;
+	}
+
+	public void setProcedureCbReasonerApi(CbReasonerApi procedureCbReasonerApi) {
+		this.procedureCbReasonerApi = procedureCbReasonerApi;
+	}
+
 }

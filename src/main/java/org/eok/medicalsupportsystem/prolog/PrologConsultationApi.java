@@ -14,7 +14,7 @@ import com.ugos.jiprolog.engine.JIPTerm;
 public class PrologConsultationApi {
 
 	private JIPEngine engine;
-	private static final String FILE_NAME = "baza_bolesti_novija.pl";
+	private static final String FILE_NAME = "resources/data/baza_bolesti_novija.pl";
 	
 	public PrologConsultationApi() {
 		this.engine = new JIPEngine();

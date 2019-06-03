@@ -38,7 +38,6 @@ slican_simptom(povisena_temperatura, upala_krajnika).
 slican_simptom(povisena_temperatura, curenje_iz_nosa).
 slican_simptom(povisena_temperatura, crvenilo_uha).
 slican_simptom(kasalj, upala_grla).
-slican_simptom(kasalj, curenje_iz_nosa).
 slican_simptom(kasalj, povracanje).
 slican_simptom(kasalj, alergijska_reakcija).
 slican_simptom(kasalj, kijavica).
