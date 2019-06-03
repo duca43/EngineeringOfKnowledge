@@ -1,20 +1,23 @@
 package org.eok.medicalsupportsystem;
 
+import org.eok.medicalsupportsystem.bayes.BayesReasonerApi;
 import org.eok.medicalsupportsystem.model.Doctor;
 import org.eok.medicalsupportsystem.model.Patient;
 import org.eok.medicalsupportsystem.prolog.PrologConsultationApi;
 import org.eok.medicalsupportsystem.view.AppFrame;
 
 public class AppSingleton {
-	
+
 	private static AppSingleton instance = new AppSingleton();
 	private Doctor doctor;
 	private Patient patient;
 	private AppFrame appFrame;
 	private PrologConsultationApi prologConsultationApi;
-	
-	private AppSingleton() { }
-	
+	private BayesReasonerApi bayesReasonerApi;
+
+	private AppSingleton() {
+	}
+
 	public static AppSingleton getInstance() {
 		return instance;
 	}
@@ -49,5 +52,13 @@ public class AppSingleton {
 
 	public void setPrologConsultationApi(PrologConsultationApi prologConsultationApi) {
 		this.prologConsultationApi = prologConsultationApi;
+	}
+
+	public BayesReasonerApi getBayesReasonerApi() {
+		return bayesReasonerApi;
+	}
+
+	public void setBayesReasonerApi(BayesReasonerApi bayesReasonerApi) {
+		this.bayesReasonerApi = bayesReasonerApi;
 	}
 }
