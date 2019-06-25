@@ -5,8 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.jena.shared.NotFoundException;
 import org.eok.medicalsupportsystem.model.Disease;
 import org.eok.medicalsupportsystem.model.Influence;
+import org.eok.medicalsupportsystem.model.Patient;
+import org.eok.medicalsupportsystem.model.Patient.GenderEnum;
+import org.eok.medicalsupportsystem.model.Patient.RaceEnum;
 import org.eok.medicalsupportsystem.model.Symptom;
 
 import com.ugos.jiprolog.engine.JIPEngine;
@@ -42,7 +46,7 @@ public class PrologConsultationApi {
 		return symptoms;
 	}
 	
-	public List<Disease> getDiseasesFromPrologBase() {
+	public List<Disease> getDiseasesFromPrologBase(Patient patient) {
 		JIPQuery diseaseQuery = engine.openSynchronousQuery("bolest(Naziv, Verovatnoca)");
 		JIPTerm solution;
 		List<Disease> diseases = new ArrayList<Disease>();
@@ -50,6 +54,7 @@ public class PrologConsultationApi {
 		{
 			String name = solution.getVariables()[0].getValue().toString();
 			float prob = Float.parseFloat(solution.getVariables()[1].getValue().toString());
+			prob = evaluateDiseaseProb(name, prob, patient.getAge(), patient.getGender(), patient.getRace());
 			diseases.add(new Disease(name, prob, this.filterNames(name)));
 		}
 		return diseases;
@@ -93,5 +98,46 @@ public class PrologConsultationApi {
 	
 	public String filterNames(String nameToFilter) {
 		return nameToFilter.substring(0, 1).toUpperCase() + nameToFilter.substring(1).replace('_', ' ');
+	}
+	
+	private float getAgeMultiplicator(String name, int age){
+		JIPQuery ageMultiplicatorQuery = engine.openSynchronousQuery("pronadji_multiplikator_godine(" + name + "," + age + ", Multiplicator)");
+		JIPTerm solution = ageMultiplicatorQuery.nextSolution();
+		if (solution != null){
+			float multiplicator = Float.parseFloat(solution.getVariables()[0].getValue().toString());
+			return multiplicator;
+		}else{
+			throw new NotFoundException("Age multiplicator doesn't exist!");
+		}
+	}
+	
+	private float getGenderMultiplicator(String name, GenderEnum gender){
+		JIPQuery genderMultiplicatorQuery = engine.openSynchronousQuery("pronadji_multiplikator_pol(" + name + "," + gender.toString().toLowerCase() + ", Multiplicator)");
+		JIPTerm solution = genderMultiplicatorQuery.nextSolution();
+		if (solution != null){
+			float multiplicator = Float.parseFloat(solution.getVariables()[0].getValue().toString());
+			return multiplicator;
+		}else{
+			throw new NotFoundException("Gender multiplicator doesn't exist!");
+		}
+	}
+	
+	private float getRaceMultiplicator(String name, RaceEnum race){
+		JIPQuery raceMultiplicatorQuery = engine.openSynchronousQuery("pronadji_multiplikator_rasa(" + name + "," + race.toString().toLowerCase() + ", Multiplicator)");
+		JIPTerm solution = raceMultiplicatorQuery.nextSolution();
+		if (solution != null){
+			float multiplicator = Float.parseFloat(solution.getVariables()[0].getValue().toString());
+			return multiplicator;
+		}else{
+			throw new NotFoundException("Race multiplicator doesn't exist!");
+		}
+	}
+		
+	public float evaluateDiseaseProb(String name, float diseaseProb, int age, GenderEnum gender, RaceEnum race){
+		List<Float> multiplicators = new ArrayList<>();
+		multiplicators.add(diseaseProb * getAgeMultiplicator(name, age));
+		multiplicators.add(diseaseProb * getGenderMultiplicator(name, gender));
+		multiplicators.add(diseaseProb * getRaceMultiplicator(name, race));
+		return new Float(multiplicators.stream().mapToDouble(Float::doubleValue).average().getAsDouble());
 	}
 }

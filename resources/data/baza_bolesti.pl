@@ -72,16 +72,16 @@ bolest(faringitis, 0.10).
 % BAZA MULTIPLIKATORA
 
 % GODINE [<1, 1-4, 5-14, 15-29, 30-44, 45-59, 60-74, 75+]
-bolest_multiplikatori_godine(adenoidne_vegetacije, [0.2, 5.3, 4.9, 0.7, 0.3, 0.2, 0.1, 0.0]).
-bolest_multiplikatori_godine(upala_sinusa, [0.3, 0.8, 1.2, 1.2, 1.5, 1.1, 0.6, 0.2]).
-bolest_multiplikatori_godine(zapaljenje_srednjeg_uha, [4.5,6.4,2.2,0.5,0.4,0.3,0.2,0.1]).
-bolest_multiplikatori_godine(tinitus, [0.1, 0.0, 0.3, 0.3, 0.9, 1.4, 2.2, 1.5]).
-bolest_multiplikatori_godine(tonzilitis, [0.3, 2.8, 3.9, 1.3, 0.8, 0.3, 0.1, 0.0]).
-bolest_multiplikatori_godine(sezonska_alergija, [0.3, 1.5, 2.6, 0.8, 1.0, 0.9, 0.7, 0.5]).
-bolest_multiplikatori_godine(prehlada, [3.5, 3.7, 2.4, 1.0, 0.6, 0.4, 0.3, 0.2]).
+bolest_multiplikatori_godine(adenoidne_vegetacije, [0.4, 2, 2, 0.9, 0.5, 0.4, 0.3, 0.1]).
+bolest_multiplikatori_godine(upala_sinusa, [0.5, 1.0, 1.2, 1.2, 1.5, 1.1, 0.6, 0.2]).
+bolest_multiplikatori_godine(zapaljenje_srednjeg_uha, [2,2,1.8,0.7,0.6,0.5,0.4,0.2]).
+bolest_multiplikatori_godine(tinitus, [0.3, 0.1, 0.5, 0.5, 1.0, 1.2, 1.8, 1.5]).
+bolest_multiplikatori_godine(tonzilitis, [0.5, 1.8, 1.9, 1.3, 0.9, 0.4, 0.2, 0.1]).
+bolest_multiplikatori_godine(sezonska_alergija, [0.4, 1.4, 1.7, 0.9, 1.0, 0.9, 0.8, 0.5]).
+bolest_multiplikatori_godine(prehlada, [1.9, 1.9, 1.8, 1.0, 0.7, 0.5, 0.3, 0.2]).
 bolest_multiplikatori_godine(laringitis, [0.3, 0.4, 0.7, 0.9, 1.4, 1.1, 1.2, 0.8]).
 bolest_multiplikatori_godine(polip_na_glasnim_zicama, [0.4, 0.4, 1.0, 0.5, 0.6, 1.8, 1.8, 0.6]).
-bolest_multiplikatori_godine(faringitis, [2.3, 3.5, 4.1, 0.8, 0.4, 0.0, 1.0, 0.0]).
+bolest_multiplikatori_godine(faringitis, [1.8, 1.9, 2, 0.9, 0.5, 0.1, 1.0, 0.1]).
 %
 
 % POL[MALE, FEMALE]
@@ -107,7 +107,7 @@ bolest_multiplikatori_rasa(sezonska_alergija, [1.0, 1.0, 1.3, 0.9, 1.3]).
 bolest_multiplikatori_rasa(prehlada, [0.9, 1.1, 1.2, 1.3, 1.2]).
 bolest_multiplikatori_rasa(laringitis, [1.2, 0.8, 1.2, 0.6, 1.2]).
 bolest_multiplikatori_rasa(polip_na_glasnim_zicama, [1.1, 0.9, 0.9, 0.9, 0.9]).
-bolest_multiplikatori_rasa(faringitis, [0.7, 0.8, 2.7, 2.0, 2.7]).
+bolest_multiplikatori_rasa(faringitis, [0.7, 0.8, 2.0, 2.0, 2.0]).
 %
 
 % BAZA POJAVE SIMPTOMA KADA JE UTVRDJENA BOLEST
@@ -187,8 +187,25 @@ opseg_godina(Godine, Opseg) :- Godine >= 45, Godine =< 59, Opseg is 5.
 opseg_godina(Godine, Opseg) :- Godine >= 60, Godine =< 74, Opseg is 6.
 opseg_godina(Godine, Opseg) :- Godine >= 75, Opseg is 7.
 
-pronadji_multiplikator(Bolest, Godine, Multiplikator) :- bolest_multiplikatori(Bolest, Lista_multiplikatora), 
-					              opseg_godina(Godine, Opseg),
-                                                         nth0(Opseg, Lista_multiplikatora, Multiplikator).
+opseg_rasa(Rasa, Opseg) :- Rasa == white, Opseg is 0.
+opseg_rasa(Rasa, Opseg) :- Rasa == black, Opseg is 1.
+opseg_rasa(Rasa, Opseg) :- Rasa == asian, Opseg is 2.
+opseg_rasa(Rasa, Opseg) :- Rasa == hispanic, Opseg is 3.
+opseg_rasa(Rasa, Opseg) :- Rasa == indian, Opseg is 4.
+
+opseg_pol(Pol, Opseg) :- Pol == male, Opseg is 0.
+opseg_pol(Pol, Opseg) :- Pol == female, Opseg is 1.
+
+pronadji_multiplikator_godine(Bolest, Godine, Multiplikator) :- bolest_multiplikatori_godine(Bolest, Lista_multiplikatora), 
+					              		opseg_godina(Godine, Opseg),
+                                                        	nth0(Opseg, Lista_multiplikatora, Multiplikator).
+
+pronadji_multiplikator_rasa(Bolest, Rasa, Multiplikator) :- bolest_multiplikatori_rasa(Bolest, Lista_multiplikatora), 
+					              	    opseg_rasa(Rasa, Opseg),
+                                                            nth0(Opseg, Lista_multiplikatora, Multiplikator).
+
+pronadji_multiplikator_pol(Bolest, Pol, Multiplikator) :- bolest_multiplikatori_pol(Bolest, Lista_multiplikatora), 
+					              	  opseg_pol(Pol, Opseg),
+                                                          nth0(Opseg, Lista_multiplikatora, Multiplikator).
 
 

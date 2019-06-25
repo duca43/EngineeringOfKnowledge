@@ -6,7 +6,6 @@ import java.awt.Font;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import org.eok.medicalsupportsystem.bayes.BayesReasonerApi;
 import org.eok.medicalsupportsystem.cbr.CbReasonerApi;
 import org.eok.medicalsupportsystem.prolog.PrologConsultationApi;
 import org.eok.medicalsupportsystem.view.AppFrame;
@@ -29,7 +28,6 @@ public class App {
 				AppFrame appFrame = new AppFrame();
 				AppSingleton.getInstance().setAppFrame(appFrame);
 				AppSingleton.getInstance().setPrologConsultationApi(new PrologConsultationApi());
-				AppSingleton.getInstance().setBayesReasonerApi(new BayesReasonerApi());
 				AppSingleton.getInstance().setTherapyCbReasonerApi(new CbReasonerApi("resources/data/therapy.csv"));
 				AppSingleton.getInstance().setProcedureCbReasonerApi(new CbReasonerApi("resources/data/procedure.csv"));
 				appFrame.setVisible(true);

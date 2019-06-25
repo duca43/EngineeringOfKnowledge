@@ -6,6 +6,7 @@ import java.util.List;
 import org.eok.medicalsupportsystem.AppSingleton;
 import org.eok.medicalsupportsystem.model.Disease;
 import org.eok.medicalsupportsystem.model.Influence;
+import org.eok.medicalsupportsystem.model.Patient;
 import org.eok.medicalsupportsystem.model.Symptom;
 
 import unbbayes.prs.Edge;
@@ -25,8 +26,8 @@ public class BayesReasonerApi {
 	private static final String STATE_HAS_NOT = "nema";
 	private List<ProbabilisticNetwork> networks = new ArrayList<ProbabilisticNetwork>();
  
-	public BayesReasonerApi(){
-		List<Disease> diseases = AppSingleton.getInstance().getPrologConsultationApi().getDiseasesFromPrologBase();
+	public BayesReasonerApi(Patient patient){
+		List<Disease> diseases = AppSingleton.getInstance().getPrologConsultationApi().getDiseasesFromPrologBase(patient);
 		for(int i = 0; i < diseases.size(); i++){
 			ProbabilisticNetwork net = new ProbabilisticNetwork("disease-network" + (i+1));
 			ProbabilisticNode diseaseNode = this.createDiseaseNode(diseases.get(i).getName(),diseases.get(i).getProb());

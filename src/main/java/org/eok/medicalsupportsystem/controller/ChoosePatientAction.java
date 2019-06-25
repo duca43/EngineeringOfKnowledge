@@ -6,6 +6,7 @@ import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 
 import org.eok.medicalsupportsystem.AppSingleton;
+import org.eok.medicalsupportsystem.bayes.BayesReasonerApi;
 import org.eok.medicalsupportsystem.view.MainDashboardPanel;
 import org.eok.medicalsupportsystem.view.PatientDashboardPanel;
 
@@ -28,6 +29,7 @@ public class ChoosePatientAction extends AbstractAction {
 																			    getPatientListScrollPane().
 																			    getPatientList().
 																			    getSelectedPatient());
+		AppSingleton.getInstance().setBayesReasonerApi(new BayesReasonerApi(AppSingleton.getInstance().getPatient()));
 		AppSingleton.getInstance().getAppFrame().setDashboardPanel(new PatientDashboardPanel());
 	}
 }
