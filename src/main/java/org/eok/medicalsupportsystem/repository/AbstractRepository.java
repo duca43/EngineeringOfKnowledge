@@ -5,6 +5,8 @@ import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QueryExecutionFactory;
 import org.apache.jena.query.QueryFactory;
 import org.apache.jena.query.ResultSet;
+import org.apache.jena.query.ResultSetFactory;
+import org.apache.jena.query.ResultSetRewindable;
 import org.apache.jena.update.UpdateExecutionFactory;
 import org.apache.jena.update.UpdateFactory;
 import org.apache.jena.update.UpdateProcessor;
@@ -33,8 +35,11 @@ public abstract class AbstractRepository<T> implements RdfRepository<T> {
 		QueryExecution qexec = QueryExecutionFactory.sparqlService(QUERY_URL, query);
 
 		ResultSet results = qexec.execSelect();
+		ResultSetRewindable resultSetRewindble = ResultSetFactory.copyResults(results);
+		
+		qexec.close();
 
-		return results;
+		return resultSetRewindble;
 	}
 	
 	@Override

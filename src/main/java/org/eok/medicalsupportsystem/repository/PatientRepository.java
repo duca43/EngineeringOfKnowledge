@@ -33,7 +33,7 @@ public class PatientRepository extends AbstractRepository<Patient> {
 				
 		System.out.println(id + " " + firstName + " " + lastName + " " + gender + " " + age + " " + race);
 		
-		return new Patient(id, firstName, lastName, gender, age, race);
+		return new Patient(id, firstName, lastName, gender, age, race, null);
 		
 	}
 
@@ -64,7 +64,7 @@ public class PatientRepository extends AbstractRepository<Patient> {
 			
 			System.out.println(id + " " + firstName + " " + lastName + " " + gender + " " + age + " " + race);
 			
-			Patient patient = new Patient(id, firstName, lastName, gender, age, race);
+			Patient patient = new Patient(id, firstName, lastName, gender, age, race, null);
 			patients.add(patient);
 		}
 		return patients;

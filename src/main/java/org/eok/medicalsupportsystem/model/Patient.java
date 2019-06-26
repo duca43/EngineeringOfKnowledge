@@ -1,5 +1,7 @@
 package org.eok.medicalsupportsystem.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class Patient extends Observable {
@@ -18,15 +20,17 @@ public class Patient extends Observable {
 	private GenderEnum gender;
 	private int age;
 	private RaceEnum race;
+	private List<Examination> examinations;
 
 //	for reading from DB
-	public Patient(String id, String firstName, String lastName, String gender, int years, String race) {
+	public Patient(String id, String firstName, String lastName, String gender, int years, String race, List<Examination> examinations) {
 		this.id = UUID.fromString(id);
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.gender = GenderEnum.valueOf(gender);
 		this.age = years;
 		this.race = RaceEnum.valueOf(race);
+		this.examinations = examinations;
 	}
 	
 //	for creating new object
@@ -37,6 +41,7 @@ public class Patient extends Observable {
 		this.gender = gender;
 		this.age = years;
 		this.race = race;
+		this.examinations = new ArrayList<>();
 	}
 
 	public UUID getId() {
@@ -85,6 +90,10 @@ public class Patient extends Observable {
 
 	public void setRace(RaceEnum race) {
 		this.race = race;
+	}
+
+	public List<Examination> getExaminations() {
+		return examinations;
 	}
 
 	@Override

@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSet;
 import org.eok.medicalsupportsystem.model.Doctor;
+import org.eok.medicalsupportsystem.model.Examination;
 import org.eok.medicalsupportsystem.model.Patient;
 
 public class DoctorRepository extends AbstractRepository<Doctor> {
@@ -144,14 +145,30 @@ public class DoctorRepository extends AbstractRepository<Doctor> {
 		while (results.hasNext()) {
 			QuerySolution solution = results.nextSolution() ;
 			
-			String id = solution.getResource("id").getLocalName();
+			String id = solution.getResource("id").getURI().split("#")[1];
 			String firstName = solution.getLiteral("firstName").getString();
 			String lastName = solution.getLiteral("lastName").getString();
 			String gender = solution.getLiteral("gender").getString();
 			int age = Integer.parseInt(solution.getLiteral("age").getString());						
 			String race = solution.getLiteral("race").getString();
-						
-			Patient patient = new Patient(id, firstName, lastName, gender, age, race);
+			
+			String examinationQueryString =
+					"SELECT ?examination " +
+							"WHERE {" +
+							  "?examination eok:patient eok:" + id + "." +
+							"}";
+			ResultSet examinationsResults = executeQuery(examinationQueryString);
+			ExaminationRepository examinationRepository = new ExaminationRepository();
+			Patient patient = new Patient(id, firstName, lastName, gender, age, race, new ArrayList<>());
+			List<Examination> examinations = new ArrayList<>();
+			while (examinationsResults.hasNext()){
+				solution = examinationsResults.nextSolution();
+				String ExaminationId = solution.getResource("examination").getURI().split("#")[1];
+				Examination examination = examinationRepository.findOne(ExaminationId);
+				examination.setPatient(patient);
+				examinations.add(examination);
+			}
+			patient.getExaminations().addAll(examinations);
 			patients.add(patient);
 		}
 		
