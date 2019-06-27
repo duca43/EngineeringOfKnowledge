@@ -11,7 +11,6 @@ import org.eok.medicalsupportsystem.model.Patient;
 import org.eok.medicalsupportsystem.repository.DoctorRepository;
 import org.eok.medicalsupportsystem.repository.PatientRepository;
 import org.eok.medicalsupportsystem.view.AddNewPatientDialog;
-import org.eok.medicalsupportsystem.view.MainDashboardPanel;
 
 public class AddNewPatientAction extends AbstractAction {
 
@@ -35,11 +34,11 @@ public class AddNewPatientAction extends AbstractAction {
 										 Integer.parseInt(dialog.getAge()),
 										 dialog.getRace());
 		
-		newPatient.attachObserver(((MainDashboardPanel)AppSingleton.getInstance().getAppFrame().
-															 getDashboardPanel()).
-															 getPatientListPanel().
-															 getPatientListScrollPane().
-															 getPatientList());
+		newPatient.attachObserver(AppSingleton.getInstance().getAppFrame()
+															.getMainDashboardPanel()
+															.getPatientListPanel()
+															.getPatientListScrollPane()
+															.getPatientList());
 		this.patientRepository.save(newPatient);
 		this.doctorRepository.addPatient(AppSingleton.getInstance().getDoctor(), newPatient);
 		AppSingleton.getInstance().getDoctor().getPatients().add(newPatient);

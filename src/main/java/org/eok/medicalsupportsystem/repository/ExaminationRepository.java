@@ -7,10 +7,10 @@ import java.util.UUID;
 
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSet;
-import org.eok.medicalsupportsystem.AppSingleton;
 import org.eok.medicalsupportsystem.model.Disease;
 import org.eok.medicalsupportsystem.model.Examination;
 import org.eok.medicalsupportsystem.model.Symptom;
+import org.eok.medicalsupportsystem.util.Util;
 
 public class ExaminationRepository extends AbstractRepository<Examination> {
 
@@ -28,7 +28,7 @@ public class ExaminationRepository extends AbstractRepository<Examination> {
 		QuerySolution solution = results.nextSolution();
 		
 		String diseaseName = solution.getLiteral("diagnose").getString();
-		Disease disease = new Disease(diseaseName, 0, diseaseName.substring(0, 1).toUpperCase() + diseaseName.substring(1).replace('_', ' '));
+		Disease disease = new Disease(diseaseName, 0, Util.filterNames(diseaseName));
 		
 		String note = solution.getLiteral("note").getString();
 		LocalDate date = LocalDate.parse(solution.getLiteral("date").getString());
@@ -64,7 +64,7 @@ public class ExaminationRepository extends AbstractRepository<Examination> {
 			QuerySolution symptomSolution = symptomResults.nextSolution();
 			
 			String sympthomName = symptomSolution.getLiteral("symptom").getString();
-			symptoms.add(new Symptom(sympthomName, 0 , sympthomName.substring(0, 1).toUpperCase() + sympthomName.substring(1).replace('_', ' ')));
+			symptoms.add(new Symptom(sympthomName, 0 , Util.filterNames(sympthomName)));
 		}
 		
 		//ADDITIONAL PROCEDURES
@@ -107,14 +107,12 @@ public class ExaminationRepository extends AbstractRepository<Examination> {
 						"eok:date \"" + entity.getDate() + "\"^^xsd:string;" +
 						"}";
 		
-		System.out.println("Saving entity: " + entity);
 		executeUpdate(insertString);
 		return entity;
 	}			
 
 	@Override
 	public Examination update(Examination entity) {
-		System.out.println("Updating entity: " + entity);
 		delete(entity.getId().toString());
 		return save(entity);
 	}

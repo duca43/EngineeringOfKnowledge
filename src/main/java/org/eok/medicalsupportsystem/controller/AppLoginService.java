@@ -15,13 +15,6 @@ public class AppLoginService extends LoginService {
 	
 	public AppLoginService() {
 		this.doctorRepository = new DoctorRepository();
-		
-		// SAVE TEST
-//		this.doctorRepository.save(dominator);
-		
-		// FIND ALL TEST
-//		List<Doctor> doctors = doctorRepository.findAll();
-//		doctors.stream().forEach(doc -> this.doctors.put(doc.getUsername(), doc));	
 	}
 	
 	@Override

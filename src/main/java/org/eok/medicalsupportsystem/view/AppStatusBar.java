@@ -1,5 +1,7 @@
 package org.eok.medicalsupportsystem.view;
 
+import java.awt.Font;
+
 import org.eok.medicalsupportsystem.AppSingleton;
 import org.eok.medicalsupportsystem.model.Doctor;
 import org.jdesktop.swingx.JXLabel;
@@ -22,6 +24,7 @@ public class AppStatusBar extends JXStatusBar {
 	public void initDateLabel()
 	{	
 		this.dateLabel = new DateLabel();
+		this.dateLabel.setFont(new Font("Comic Sans MS", Font.PLAIN, 17));
 		this.add(this.dateLabel, this.fillConstraint);	
 	}
 	
@@ -35,6 +38,7 @@ public class AppStatusBar extends JXStatusBar {
 		msgBuilder.append(" ");
 		msgBuilder.append(doctor.getLastName());
 		this.userInfoLabel.setText(msgBuilder.toString());
+		this.userInfoLabel.setFont(new Font("Comic Sans MS", Font.PLAIN, 17));
 		this.add(this.userInfoLabel, this.fillConstraint);
 	}
 	

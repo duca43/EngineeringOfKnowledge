@@ -12,6 +12,7 @@ import org.eok.medicalsupportsystem.model.Patient;
 import org.eok.medicalsupportsystem.model.Patient.GenderEnum;
 import org.eok.medicalsupportsystem.model.Patient.RaceEnum;
 import org.eok.medicalsupportsystem.model.Symptom;
+import org.eok.medicalsupportsystem.util.Util;
 
 import com.ugos.jiprolog.engine.JIPEngine;
 import com.ugos.jiprolog.engine.JIPQuery;
@@ -41,7 +42,7 @@ public class PrologConsultationApi {
 		{
 			String name = solution.getVariables()[0].getValue().toString();
 			float prob = Float.parseFloat(solution.getVariables()[1].getValue().toString());
-			symptoms.put(name, new Symptom(name, prob, this.filterNames(name)));
+			symptoms.put(name, new Symptom(name, prob, Util.filterNames(name)));
 		}
 		return symptoms;
 	}
@@ -55,7 +56,7 @@ public class PrologConsultationApi {
 			String name = solution.getVariables()[0].getValue().toString();
 			float prob = Float.parseFloat(solution.getVariables()[1].getValue().toString());
 			prob = evaluateDiseaseProb(name, prob, patient.getAge(), patient.getGender(), patient.getRace());
-			diseases.add(new Disease(name, prob, this.filterNames(name)));
+			diseases.add(new Disease(name, prob, Util.filterNames(name)));
 		}
 		return diseases;
 	}
@@ -94,10 +95,6 @@ public class PrologConsultationApi {
 			symptoms.add(this.symptomsMap.get(symptomName));
 		}
 		return symptoms;
-	}
-	
-	public String filterNames(String nameToFilter) {
-		return nameToFilter.substring(0, 1).toUpperCase() + nameToFilter.substring(1).replace('_', ' ');
 	}
 	
 	private float getAgeMultiplicator(String name, int age){

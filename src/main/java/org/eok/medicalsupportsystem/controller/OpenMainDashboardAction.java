@@ -6,7 +6,7 @@ import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 
 import org.eok.medicalsupportsystem.AppSingleton;
-import org.eok.medicalsupportsystem.view.MainDashboardPanel;
+import org.eok.medicalsupportsystem.view.AppFrame;
 
 public class OpenMainDashboardAction extends AbstractAction {
 
@@ -20,7 +20,6 @@ public class OpenMainDashboardAction extends AbstractAction {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		MainDashboardPanel dashboardPanel = new MainDashboardPanel();
-		AppSingleton.getInstance().getAppFrame().setDashboardPanel(dashboardPanel);
+		AppSingleton.getInstance().getAppFrame().showDashboard(AppFrame.MAIN_DASHBOARD);
 	}
 }

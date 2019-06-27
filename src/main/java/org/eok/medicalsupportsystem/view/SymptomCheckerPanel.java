@@ -22,7 +22,7 @@ import javax.swing.border.MatteBorder;
 import javax.swing.border.SoftBevelBorder;
 
 import org.eok.medicalsupportsystem.AppSingleton;
-import org.eok.medicalsupportsystem.controller.ProceedToDiseaseCalculationAction;
+import org.eok.medicalsupportsystem.controller.ProceedToAdditionalSymptomCheckingAction;
 import org.eok.medicalsupportsystem.model.Symptom;
 import org.jdesktop.swingx.JXButton;
 import org.jdesktop.swingx.JXLabel;
@@ -35,7 +35,7 @@ public class SymptomCheckerPanel extends JPanel {
 
 	private static final long serialVersionUID = 2862711375769048305L;
 	private JComboBox<Symptom> symptomSearch;
-	private Map<String, Symptom> choosenSymptomMap;
+	private Map<String, Symptom> choosenSymptomsMap;
 	private Map<String, Symptom> allSymptomsMap;
 	private JPanel symptomItemsPanel;
 	private JPanel relatedPanel;
@@ -87,7 +87,7 @@ public class SymptomCheckerPanel extends JPanel {
 					}
 					List<Symptom> similarSymptoms = AppSingleton.getInstance().getPrologConsultationApi().getSimilarSymptomsFromPrologBase(selectedSymptom);
 					for (Symptom similarSymptom : similarSymptoms) {
-						if (SymptomCheckerPanel.this.choosenSymptomMap.get(similarSymptom.getName()) == null) {
+						if (SymptomCheckerPanel.this.choosenSymptomsMap.get(similarSymptom.getName()) == null) {
 							SymptomCheckerPanel.this.createRelatedSymptomLink(similarSymptom);							
 						}
 					}					
@@ -102,18 +102,17 @@ public class SymptomCheckerPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Symptom symptom = (Symptom) SymptomCheckerPanel.this.symptomSearch.getSelectedItem();
-				if (symptom == null || choosenSymptomMap.get(symptom.getName()) != null) {
+				if (symptom == null || choosenSymptomsMap.get(symptom.getName()) != null) {
 					return;
 				}
-				SymptomCheckerPanel.this.choosenSymptomMap.put(symptom.getName(), symptom);
-				SymptomCheckerPanel.this.generateSymptomItem(symptom);
+				chooseSymptom(symptom);
 				symptomSearch.setSelectedIndex(-1);					
 			}
 		});
 		btnAdd.setText("Add");
 		add(btnAdd, "cell 3 2");
 		
-		this.choosenSymptomMap = new HashMap<>();
+		this.choosenSymptomsMap = new HashMap<>();
 		
 		relatedPanel = new JPanel();
 		add(relatedPanel, "cell 1 3 3 1,alignx leading,aligny center");
@@ -132,15 +131,15 @@ public class SymptomCheckerPanel extends JPanel {
 		scrollPane.setViewportView(symptomItemsPanel);
 		symptomItemsPanel.setLayout(new MigLayout("wrap 2", "[grow,center]", "[]"));
 		
-		JXButton btnProceedForward = new JXButton(new ProceedToDiseaseCalculationAction(this));
+		JXButton btnProceedForward = new JXButton(new ProceedToAdditionalSymptomCheckingAction(this));
 		btnProceedForward.setFont(new Font("Comic Sans MS", Font.BOLD, 18));
-		add(btnProceedForward, "cell 1 6 3 1,alignx center");
+		add(btnProceedForward, "cell 1 6 3 1,alignx right");
 	}
 	
 	private void generateSymptomItem(Symptom symptom) {
 		JXLabel lblSymptom = new JXLabel();
 		lblSymptom.setText(symptom.getLabel());
-		lblSymptom.setFont(new Font("Comic Sans MS", Font.PLAIN, 18));
+		lblSymptom.setFont(new Font("Comic Sans MS", Font.PLAIN, 22));
 		symptomItemsPanel.add(lblSymptom);
 		JXButton btnRemoveSymtpom = new JXButton(new ImageIcon("resources/images/remove-icon.png"));
 		btnRemoveSymtpom.setContentAreaFilled(false);
@@ -151,7 +150,7 @@ public class SymptomCheckerPanel extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				SymptomCheckerPanel.this.choosenSymptomMap.remove(symptom.getName());
+				SymptomCheckerPanel.this.choosenSymptomsMap.remove(symptom.getName());
 				SymptomCheckerPanel.this.symptomItemsPanel.remove(lblSymptom);
 				SymptomCheckerPanel.this.symptomItemsPanel.remove(btnRemoveSymtpom);
 			}
@@ -163,7 +162,7 @@ public class SymptomCheckerPanel extends JPanel {
 		JXButton button = new JXButton(symptom.getLabel());
 		button.setForeground(Color.RED);
 		button.setName(symptom.getName());
-		button.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
+		button.setFont(new Font("Comic Sans MS", Font.PLAIN, 18));
 		button.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
 		button.setFocusPainted(false);
 		button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -172,8 +171,7 @@ public class SymptomCheckerPanel extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				SymptomCheckerPanel.this.choosenSymptomMap.put(symptom.getName(), symptom);
-				SymptomCheckerPanel.this.generateSymptomItem(symptom);
+				chooseSymptom(symptom);
 				symptomSearch.setSelectedIndex(-1);
 				for (int i = SymptomCheckerPanel.this.relatedPanel.getComponentCount() - 1; i > 0; i--) {
 					if (SymptomCheckerPanel.this.relatedPanel.getComponent(i).getName().equals(button.getName())) {
@@ -187,6 +185,15 @@ public class SymptomCheckerPanel extends JPanel {
 	}
 	
 	public List<Symptom> getChoosenSymptoms() {
-		return new ArrayList<>(this.choosenSymptomMap.values());
+		return new ArrayList<>(this.choosenSymptomsMap.values());
+	}
+
+	public Map<String, Symptom> getChoosenSymptomsMap() {
+		return choosenSymptomsMap;
+	}
+
+	public void chooseSymptom(Symptom symptom) {
+		SymptomCheckerPanel.this.choosenSymptomsMap.put(symptom.getName(), symptom);
+		SymptomCheckerPanel.this.generateSymptomItem(symptom);
 	}
 }

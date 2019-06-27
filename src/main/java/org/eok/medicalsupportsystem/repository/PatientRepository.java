@@ -30,8 +30,6 @@ public class PatientRepository extends AbstractRepository<Patient> {
 		String gender = solution.getLiteral("gender").getString();
 		int age = Integer.parseInt(solution.getLiteral("age").getString());
 		String race = solution.getLiteral("race").getString();
-				
-		System.out.println(id + " " + firstName + " " + lastName + " " + gender + " " + age + " " + race);
 		
 		return new Patient(id, firstName, lastName, gender, age, race, null);
 		
@@ -62,8 +60,6 @@ public class PatientRepository extends AbstractRepository<Patient> {
 			int age = Integer.parseInt(solution.getLiteral("age").getString());						
 			String race = solution.getLiteral("race").getString();
 			
-			System.out.println(id + " " + firstName + " " + lastName + " " + gender + " " + age + " " + race);
-			
 			Patient patient = new Patient(id, firstName, lastName, gender, age, race, null);
 			patients.add(patient);
 		}
@@ -82,8 +78,6 @@ public class PatientRepository extends AbstractRepository<Patient> {
 				"    eok:age \"" + entity.getAge() + "\"^^xsd:int;" + 
 				"    eok:race \"" + entity.getRace() + "\"^^xsd:string." + 
 				"}";
-
-		System.out.println("Saving entity: " + entity);
 		
 		executeUpdate(insertString);		
         
@@ -92,8 +86,6 @@ public class PatientRepository extends AbstractRepository<Patient> {
 
 	@Override
 	public Patient update(Patient entity) {
-		
-		System.out.println("Updating entity: " + entity);
 		
 		delete(entity.getId().toString());
 		

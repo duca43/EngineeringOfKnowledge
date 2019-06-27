@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class Examination {
+public class Examination implements Comparable<Examination> {
 
 	private UUID id;
 	private Patient patient;
@@ -90,8 +90,11 @@ public class Examination {
 
 	@Override
 	public String toString() {
-		return "Examination [id=" + id + ", patient=" + patient + ", diagnose=" + diagnose + ", symptomList="
-				+ symptomList + ", therapies=" + therapies + ", additionalProcedures=" + additionalProcedures
-				+ ", note=" + note + ", date=" + date + "]";
+		return this.date.toString() + " " + this.diagnose.getLabel();
+	}
+
+	@Override
+	public int compareTo(Examination examination) {
+		return this.getDate().isBefore(examination.getDate()) ? -1 : this.getDate().isAfter(examination.getDate()) ? 1 : 0;
 	}
 }

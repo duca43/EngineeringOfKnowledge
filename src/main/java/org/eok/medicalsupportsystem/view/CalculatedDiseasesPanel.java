@@ -10,9 +10,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.MatteBorder;
 
-import org.eok.medicalsupportsystem.controller.BackToSymptomCheckerPanelAction;
+import org.eok.medicalsupportsystem.controller.BackAction;
 import org.eok.medicalsupportsystem.controller.ProceedToTherapyRecommendationAction;
 import org.eok.medicalsupportsystem.model.Disease;
+import org.eok.medicalsupportsystem.model.Symptom;
 import org.jdesktop.swingx.JXLabel;
 
 import net.miginfocom.swing.MigLayout;
@@ -22,7 +23,9 @@ public class CalculatedDiseasesPanel extends JPanel {
 
 	private static final long serialVersionUID = -2456120838136377788L;
 	private JPanel diseasesCard;
-
+	private List<Symptom> choosenSymptoms;
+	private List<Symptom> symptomsPatientDontHave;
+	
 	/**
 	 * Create the panel.
 	 */
@@ -44,13 +47,17 @@ public class CalculatedDiseasesPanel extends JPanel {
 		scrollPane.setViewportView(diseasesCard);
 		add(scrollPane, "cell 1 2 2 1,grow");
 		
-		JXButton btnBack = new JXButton(new BackToSymptomCheckerPanelAction());
+		JXButton btnBack = new JXButton(new BackAction());
 		btnBack.setFont(new Font("Comic Sans MS", Font.BOLD, 18));
 		add(btnBack, "cell 1 3,alignx left");
 	}
 	
 	public void generateDiseasesLabels(List<Disease> diseases) {
+		this.diseasesCard.removeAll();
 		for (Disease disease : diseases) {
+			if (disease.getProb() < 0.1) {
+				continue;
+			}
 			this.diseasesCard.add(this.generateDiseaseNameLabel(disease));
 			this.diseasesCard.add(this.generateArrowLabel());
 			this.diseasesCard.add(this.generateDiseaseProbLabel(disease));
@@ -76,9 +83,25 @@ public class CalculatedDiseasesPanel extends JPanel {
 	}
 	
 	private JXButton generateProceedToTherapyAndAdditionalProcedurePanel(Disease disease) {
-		JXButton button = new JXButton(new ProceedToTherapyRecommendationAction(disease));
+		JXButton button = new JXButton(new ProceedToTherapyRecommendationAction(disease, choosenSymptoms, symptomsPatientDontHave));
 		button.setFont(new Font("Comic Sans MS", Font.PLAIN, 26));
 		button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		return button;
+	}
+
+	public List<Symptom> getChoosenSymptoms() {
+		return choosenSymptoms;
+	}
+
+	public void setChoosenSymptoms(List<Symptom> choosenSymptoms) {
+		this.choosenSymptoms = choosenSymptoms;
+	}
+
+	public List<Symptom> getSymptomsPatientDontHave() {
+		return symptomsPatientDontHave;
+	}
+
+	public void setSymptomsPatientDontHave(List<Symptom> symptomsPatientDontHave) {
+		this.symptomsPatientDontHave = symptomsPatientDontHave;
 	}
 }

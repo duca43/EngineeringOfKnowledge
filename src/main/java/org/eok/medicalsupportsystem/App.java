@@ -1,7 +1,6 @@
 package org.eok.medicalsupportsystem;
 
 import java.awt.EventQueue;
-import java.awt.Font;
 
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -15,8 +14,7 @@ public class App {
 	public static void main(String[] args)  {
 		try 
 		{
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			UIManager.put("Label.font", new Font("Comic Sans MS", Font.PLAIN, 13));
+			UIManager.setLookAndFeel("com.jtattoo.plaf.graphite.GraphiteLookAndFeel");
 		} 
 		catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) { e.printStackTrace(); }
 		

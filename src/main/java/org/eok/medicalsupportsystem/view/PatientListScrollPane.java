@@ -1,7 +1,5 @@
 package org.eok.medicalsupportsystem.view;
 
-import java.awt.Dimension;
-
 import javax.swing.JScrollPane;
 
 public class PatientListScrollPane extends JScrollPane {
@@ -12,7 +10,6 @@ public class PatientListScrollPane extends JScrollPane {
 	public PatientListScrollPane() {
 		this.patientList = new PatientList();
 		this.setViewportView(patientList);
-		this.setPreferredSize(new Dimension((int)(AppFrame.getScreenDimension().width / 8), 0));
 	}
 
 	public PatientList getPatientList() {

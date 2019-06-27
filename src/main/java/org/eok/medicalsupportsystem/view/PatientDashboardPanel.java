@@ -1,14 +1,13 @@
 package org.eok.medicalsupportsystem.view;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
+import java.awt.CardLayout;
 import java.awt.Font;
 
 import javax.swing.JPanel;
-import javax.swing.border.MatteBorder;
 
-import org.eok.medicalsupportsystem.AppSingleton;
 import org.eok.medicalsupportsystem.controller.OpenMainDashboardAction;
+import org.eok.medicalsupportsystem.model.Patient;
 import org.jdesktop.swingx.JXButton;
 import org.jdesktop.swingx.JXLabel;
 
@@ -17,65 +16,108 @@ import net.miginfocom.swing.MigLayout;
 public class PatientDashboardPanel extends JPanel {
 
 	private static final long serialVersionUID = 1117327672646374420L;
-	private JPanel centralPanel;
+	public static final String SYMPTOM_CHECKER_PANEL = "symptom-checker-panel";
+	public static final String ADDITIONAL_SYMPTOM_CHECKER_PANEL = "additional-symptom-checker-panel";
+	public static final String CALCULATED_DISEASES_PANEL = "calculated-diseases-panel";
+	public static final String THERAPIES_AND_ADDITIONAL_PROCEDURES_PANEL = "therapies-and-additional-procedures-panel";
+	public static final String ARGUMENTATION_GRAPH_PANEL = "argumentation-graph-panel";
+	private JPanel cards;
+	private CardLayout cardLayout;
 	private SymptomCheckerPanel symptomCheckerPanel;
+	private AdditionalSymptomCheckerPanel additionalSymptomCheckerPanel;
 	private CalculatedDiseasesPanel calculatedDiseasesPanel;
-
-	/**
-	 * Create the panel.
-	 */
-	public PatientDashboardPanel() {
+	private TherapiesAndAdditionalProceduresPanel therapiesAndAdditionalProceduresPanel;
+	private ArgumentationGraphPanel argumentationGraphPanel;
+	
+	public PatientDashboardPanel(Patient patient) {
 		setLayout(new BorderLayout(0, 0));
 		
-		JPanel panel = new JPanel();
-		add(panel, BorderLayout.WEST);
-		panel.setLayout(new MigLayout("", "[grow]", "[][14.00][grow][grow]"));
+		JPanel detailsPanel = new JPanel();
+		this.add(detailsPanel, BorderLayout.WEST);
+		detailsPanel.setLayout(new MigLayout("", "[grow]", "[][grow][][grow][grow][grow][grow]"));
 		
 		JXButton btnOpenMainDashboard = new JXButton(new OpenMainDashboardAction());
-		panel.add(btnOpenMainDashboard, "cell 0 0,alignx center");
-		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		panel_1.setBackground(Color.WHITE);
-		panel.add(panel_1, "cell 0 2,grow");
-		panel_1.setLayout(new MigLayout("", "[grow]", "[][grow]"));
+		btnOpenMainDashboard.setFont(new Font("Comic Sans MS", Font.BOLD, 18));
+		detailsPanel.add(btnOpenMainDashboard, "cell 0 0,alignx center");
 		
 		JXLabel lblPatientInfo = new JXLabel();
+		detailsPanel.add(lblPatientInfo, "cell 0 2,alignx center");
 		lblPatientInfo.setFont(new Font("Comic Sans MS", Font.BOLD | Font.ITALIC, 16));
 		lblPatientInfo.setText("Patient info:");
-		panel_1.add(lblPatientInfo, "cell 0 0,alignx center");
 		
-		PatientDetailsFields patientDetailsFields = new PatientDetailsFields(AppSingleton.getInstance().getPatient());
-		panel_1.add(patientDetailsFields, "cell 0 1,grow");
+		PatientDetailsFields patientDetailsFields = new PatientDetailsFields(patient);
+		detailsPanel.add(patientDetailsFields, "cell 0 3 1 2,grow");
 		
-		this.centralPanel = new SymptomCheckerPanel();
-		add(centralPanel, BorderLayout.CENTER);
+		this.cardLayout = new CardLayout();
+		this.cards = new JPanel(cardLayout);
 		
+		symptomCheckerPanel = new SymptomCheckerPanel();
+		additionalSymptomCheckerPanel = new AdditionalSymptomCheckerPanel();
+		calculatedDiseasesPanel = new CalculatedDiseasesPanel();
+		therapiesAndAdditionalProceduresPanel = new TherapiesAndAdditionalProceduresPanel();
+		argumentationGraphPanel = new ArgumentationGraphPanel();
+		this.cards.add(symptomCheckerPanel, SYMPTOM_CHECKER_PANEL);
+		this.cards.add(additionalSymptomCheckerPanel, ADDITIONAL_SYMPTOM_CHECKER_PANEL);
+		this.cards.add(calculatedDiseasesPanel, CALCULATED_DISEASES_PANEL);
+		this.cards.add(therapiesAndAdditionalProceduresPanel, THERAPIES_AND_ADDITIONAL_PROCEDURES_PANEL);
+		this.cards.add(argumentationGraphPanel, ARGUMENTATION_GRAPH_PANEL);
+		this.add(cards, BorderLayout.CENTER);
 	}
 	
-	public JPanel getCentralPanel() {
-		return centralPanel;
+	public void switchToPreviousPanel() {
+		this.cardLayout.previous(this.cards);
 	}
-
-	public void setCentralPanel(JPanel centralPanel) {
-		this.remove(this.centralPanel);
-		this.centralPanel = centralPanel;
-		this.add(centralPanel, BorderLayout.CENTER);
+	
+	public void switchToNextPanel() {
+		this.cardLayout.next(this.cards);
 	}
 
 	public SymptomCheckerPanel getSymptomCheckerPanel() {
-		return symptomCheckerPanel;
+		for (int i = 0; i < this.cards.getComponentCount(); i++) {
+			if (this.cards.getComponent(i) instanceof SymptomCheckerPanel) {
+				return (SymptomCheckerPanel) this.cards.getComponent(i);  
+			}
+		}
+		return null;
 	}
 
-	public void setSymptomCheckerPanel(SymptomCheckerPanel symptomCheckerPanel) {
-		this.symptomCheckerPanel = symptomCheckerPanel;
+	public AdditionalSymptomCheckerPanel getAdditionalSymptomCheckerPanel() {
+		for (int i = 0; i < this.cards.getComponentCount(); i++) {
+			if (this.cards.getComponent(i) instanceof AdditionalSymptomCheckerPanel) {
+				return (AdditionalSymptomCheckerPanel) this.cards.getComponent(i);  
+			}
+		}
+		return null;
 	}
-
+	
 	public CalculatedDiseasesPanel getCalculatedDiseasesPanel() {
-		return calculatedDiseasesPanel;
+		for (int i = 0; i < this.cards.getComponentCount(); i++) {
+			if (this.cards.getComponent(i) instanceof CalculatedDiseasesPanel) {
+				return (CalculatedDiseasesPanel) this.cards.getComponent(i);  
+			}
+		}
+		return null;
+	}
+	
+	public TherapiesAndAdditionalProceduresPanel getTherapiesAndAdditionalProceduresPanel() {
+		for (int i = 0; i < this.cards.getComponentCount(); i++) {
+			if (this.cards.getComponent(i) instanceof TherapiesAndAdditionalProceduresPanel) {
+				return (TherapiesAndAdditionalProceduresPanel) this.cards.getComponent(i);  
+			}
+		}
+		return null;
 	}
 
-	public void setCalculatedDiseasesPanel(CalculatedDiseasesPanel calculatedDiseasesPanel) {
-		this.calculatedDiseasesPanel = calculatedDiseasesPanel;
+	public ArgumentationGraphPanel getArgumentationGraphPanel() {
+		for (int i = 0; i < this.cards.getComponentCount(); i++) {
+			if (this.cards.getComponent(i) instanceof ArgumentationGraphPanel) {
+				return (ArgumentationGraphPanel) this.cards.getComponent(i);  
+			}
+		}
+		return null;
+	}
+
+	public JPanel getCards() {
+		return this.cards;
 	}
 }

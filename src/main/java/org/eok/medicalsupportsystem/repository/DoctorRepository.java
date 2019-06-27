@@ -31,8 +31,6 @@ public class DoctorRepository extends AbstractRepository<Doctor> {
 		String firstName = solution.getLiteral("firstName").getString();
 		String lastName = solution.getLiteral("lastName").getString();
 		
-		System.out.println(id + " " + username + " " + password + " " + firstName + " " + lastName);
-		
 		return new Doctor(id, username, password, firstName, lastName);
 	}
 	
@@ -53,8 +51,6 @@ public class DoctorRepository extends AbstractRepository<Doctor> {
 		String password = solution.getLiteral("password").getString();
 		String firstName = solution.getLiteral("firstName").getString();
 		String lastName = solution.getLiteral("lastName").getString();
-		
-		System.out.println(id + " " + username + " " + password + " " + firstName + " " + lastName);
 		
 		return new Doctor(id, username, password, firstName, lastName);
 	}
@@ -82,8 +78,6 @@ public class DoctorRepository extends AbstractRepository<Doctor> {
 			String firstName = solution.getLiteral("firstName").getString();
 			String lastName = solution.getLiteral("lastName").getString();
 			
-			System.out.println(id + " " + username + " " + password + " " + firstName + " " + lastName);
-			
 			Doctor doctor = new Doctor(id, username, password, firstName, lastName);
 			doctors.add(doctor);
 		}
@@ -101,8 +95,6 @@ public class DoctorRepository extends AbstractRepository<Doctor> {
 				"   	eok:firstName \"" + entity.getFirstName() + "\"^^xsd:string;" + 
 				"		eok:lastName \"" + entity.getLastName() + "\"^^xsd:string." + 
 				"}";
-
-		System.out.println("Saving entity: " + entity);
 		
 		executeUpdate(insertString);		
         
@@ -111,8 +103,6 @@ public class DoctorRepository extends AbstractRepository<Doctor> {
 
 	@Override
 	public Doctor update(Doctor entity) {
-		
-		System.out.println("Updating entity: " + entity);
 		
 		delete(entity.getId().toString());
 		

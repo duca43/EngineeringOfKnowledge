@@ -49,8 +49,6 @@ public abstract class AbstractRepository<T> implements RdfRepository<T> {
 				"WHERE {" + 
 				"	eok:" + id + " ?a ?b." + 
 				"}";
-
-		System.out.println("Deleting entity with id: " + id);
 		
 		executeUpdate(deleteString);
 	}

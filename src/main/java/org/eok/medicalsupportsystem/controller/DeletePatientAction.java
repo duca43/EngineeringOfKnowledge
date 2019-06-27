@@ -11,7 +11,6 @@ import org.eok.medicalsupportsystem.event.PatientEvent;
 import org.eok.medicalsupportsystem.event.PatientEvent.PatientEnum;
 import org.eok.medicalsupportsystem.model.Patient;
 import org.eok.medicalsupportsystem.repository.PatientRepository;
-import org.eok.medicalsupportsystem.view.MainDashboardPanel;
 
 public class DeletePatientAction extends AbstractAction {
 
@@ -27,14 +26,13 @@ public class DeletePatientAction extends AbstractAction {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		Patient selectedPatient = (((MainDashboardPanel)AppSingleton.getInstance().
-																     getAppFrame().
-																     getDashboardPanel()).
-																     getPatientListPanel().
-																     getPatientListScrollPane().
-																     getPatientList().
-																     getSelectedPatient());
-		System.out.println(selectedPatient);
+		Patient selectedPatient = (AppSingleton.getInstance()
+										     .getAppFrame()
+										     .getMainDashboardPanel()
+										     .getPatientListPanel()
+										     .getPatientListScrollPane()
+										     .getPatientList()
+										     .getSelectedPatient());
 		if (selectedPatient != null) {		
 			this.patientRepository.delete(selectedPatient.getId().toString());
 			List<Patient> patients = AppSingleton.getInstance().getDoctor().getPatients();

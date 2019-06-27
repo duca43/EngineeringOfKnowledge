@@ -2,6 +2,7 @@ package org.eok.medicalsupportsystem.view;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -52,47 +53,57 @@ public class AddNewPatientDialog extends JDialog {
 		{
 			lblFirstName = new JXLabel();
 			lblFirstName.setText("First name:");
+			lblFirstName.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
 			contentPanel.add(lblFirstName, "cell 0 0,alignx trailing");
 		}
 		{
 			textFieldFirstName = new JXTextField();
+			textFieldFirstName.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
 			contentPanel.add(textFieldFirstName, "cell 1 0,growx");
 		}
 		{
 			lblLastName = new JXLabel();
 			lblLastName.setText("Last name:");
+			lblLastName.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
 			contentPanel.add(lblLastName, "cell 0 1,alignx trailing");
 		}
 		{
 			textFieldLastName = new JXTextField();
+			textFieldLastName.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
 			contentPanel.add(textFieldLastName, "cell 1 1,growx");
 		}
 		{
 			lblGender = new JXLabel();
 			lblGender.setText("Gender:");
+			lblGender.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
 			contentPanel.add(lblGender, "cell 0 2,alignx trailing");
 		}
 		{
 			comboBoxGender = new JComboBox();
+			comboBoxGender.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
 			comboBoxGender.setModel(new DefaultComboBoxModel(GenderEnum.values()));
 			contentPanel.add(comboBoxGender, "cell 1 2,growx");
 		}
 		{
 			lblAge = new JXLabel();
 			lblAge.setText("Age:");
+			lblAge.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
 			contentPanel.add(lblAge, "cell 0 3,alignx trailing");
 		}
 		{
 			textFieldAge = new JXTextField();
+			textFieldAge.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
 			contentPanel.add(textFieldAge, "cell 1 3,growx");
 		}
 		{
 			lblRace = new JXLabel();
 			lblRace.setText("Race:");
+			lblRace.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
 			contentPanel.add(lblRace, "cell 0 4,alignx trailing");
 		}
 		{
 			comboBoxRace = new JComboBox<Object>();
+			comboBoxRace.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
 			comboBoxRace.setModel(new DefaultComboBoxModel(RaceEnum.values()));
 			contentPanel.add(comboBoxRace, "cell 1 4,growx");
 		}
@@ -102,11 +113,13 @@ public class AddNewPatientDialog extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				okButton = new JButton(new AddNewPatientAction(this));
+				okButton.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
 				cancelButton = new JButton("Cancel");
+				cancelButton.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
 				cancelButton.addActionListener(new ActionListener() {
 					
 					@Override

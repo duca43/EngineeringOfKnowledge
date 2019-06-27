@@ -5,22 +5,21 @@ import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
+import javax.swing.SwingUtilities;
 
 import org.eok.medicalsupportsystem.AppSingleton;
 import org.eok.medicalsupportsystem.model.Disease;
 import org.eok.medicalsupportsystem.model.Symptom;
 import org.eok.medicalsupportsystem.util.DiseaseComparator;
-import org.eok.medicalsupportsystem.view.CalculatedDiseasesPanel;
-import org.eok.medicalsupportsystem.view.PatientDashboardPanel;
-import org.eok.medicalsupportsystem.view.SymptomCheckerPanel;
+import org.eok.medicalsupportsystem.view.AdditionalSymptomCheckerPanel;
 
 public class ProceedToDiseaseCalculationAction extends AbstractAction {
 
 	private static final long serialVersionUID = -3255368193115200386L;
-	private SymptomCheckerPanel symptomCheckerPanel;
+	private AdditionalSymptomCheckerPanel additionalSymptomCheckerPanel;
 	
-	public ProceedToDiseaseCalculationAction(SymptomCheckerPanel symptomCheckerPanel) {
-		this.symptomCheckerPanel = symptomCheckerPanel;
+	public ProceedToDiseaseCalculationAction(AdditionalSymptomCheckerPanel symptomCheckerPanel) {
+		this.additionalSymptomCheckerPanel = symptomCheckerPanel;
 		putValue(NAME, "Proceed forward");
 		putValue(SHORT_DESCRIPTION, "Click to start calculation of the most probable diseases");
 		putValue(SMALL_ICON, new ImageIcon("resources/images/proceed-icon.png"));
@@ -28,13 +27,14 @@ public class ProceedToDiseaseCalculationAction extends AbstractAction {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		CalculatedDiseasesPanel calculatedDiseasesPanel = new CalculatedDiseasesPanel();
-		List<Symptom> choosenSymptoms = symptomCheckerPanel.getChoosenSymptoms();
-		List<Disease> diseases = AppSingleton.getInstance().getBayesReasonerApi().getDiseaseProbability(choosenSymptoms);
-		diseases.sort(new DiseaseComparator());
-		calculatedDiseasesPanel.generateDiseasesLabels(diseases);
-		((PatientDashboardPanel)AppSingleton.getInstance().getAppFrame().getDashboardPanel()).setSymptomCheckerPanel(this.symptomCheckerPanel);
-		((PatientDashboardPanel)AppSingleton.getInstance().getAppFrame().getDashboardPanel()).setCalculatedDiseasesPanel(calculatedDiseasesPanel);
-		((PatientDashboardPanel)AppSingleton.getInstance().getAppFrame().getDashboardPanel()).setCentralPanel(calculatedDiseasesPanel);
+		List<Symptom> choosenSymptoms = additionalSymptomCheckerPanel.getChoosenSymptoms();
+		List<Symptom> symptomsPatientDontHave = additionalSymptomCheckerPanel.getSymptomsPatientDontHave();
+		List<Disease> diseases = AppSingleton.getInstance().getBayesReasonerApi().getDiseaseProbability(choosenSymptoms, symptomsPatientDontHave);
+		diseases.sort(new DiseaseComparator());	
+		AppSingleton.getInstance().getAppFrame().getPatientDashboardPanel().getCalculatedDiseasesPanel().setChoosenSymptoms(choosenSymptoms);
+		AppSingleton.getInstance().getAppFrame().getPatientDashboardPanel().getCalculatedDiseasesPanel().setSymptomsPatientDontHave(symptomsPatientDontHave);
+		AppSingleton.getInstance().getAppFrame().getPatientDashboardPanel().getCalculatedDiseasesPanel().generateDiseasesLabels(diseases);
+		SwingUtilities.updateComponentTreeUI(AppSingleton.getInstance().getAppFrame().getPatientDashboardPanel().getCards());
+		AppSingleton.getInstance().getAppFrame().getPatientDashboardPanel().switchToNextPanel();
 	}
 }

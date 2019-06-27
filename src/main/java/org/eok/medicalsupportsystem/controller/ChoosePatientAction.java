@@ -7,7 +7,7 @@ import javax.swing.ImageIcon;
 
 import org.eok.medicalsupportsystem.AppSingleton;
 import org.eok.medicalsupportsystem.bayes.BayesReasonerApi;
-import org.eok.medicalsupportsystem.view.MainDashboardPanel;
+import org.eok.medicalsupportsystem.view.AppFrame;
 import org.eok.medicalsupportsystem.view.PatientDashboardPanel;
 
 public class ChoosePatientAction extends AbstractAction {
@@ -22,14 +22,16 @@ public class ChoosePatientAction extends AbstractAction {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		AppSingleton.getInstance().setPatient(((MainDashboardPanel)AppSingleton.getInstance().
-																			    getAppFrame().
-																			    getDashboardPanel()).
-																			    getPatientListPanel().
-																			    getPatientListScrollPane().
-																			    getPatientList().
-																			    getSelectedPatient());
+		AppSingleton.getInstance().setPatient(AppSingleton.getInstance()
+												      	.getAppFrame()
+													    .getMainDashboardPanel()
+													    .getPatientListPanel()
+													    .getPatientListScrollPane()
+													    .getPatientList()
+													    .getSelectedPatient());
+		
 		AppSingleton.getInstance().setBayesReasonerApi(new BayesReasonerApi(AppSingleton.getInstance().getPatient()));
-		AppSingleton.getInstance().getAppFrame().setDashboardPanel(new PatientDashboardPanel());
+		AppSingleton.getInstance().getAppFrame().setPatientDashboardPanel(new PatientDashboardPanel(AppSingleton.getInstance().getPatient()));
+		AppSingleton.getInstance().getAppFrame().showDashboard(AppFrame.PATIENT_DASHBOARD);
 	}
 }
