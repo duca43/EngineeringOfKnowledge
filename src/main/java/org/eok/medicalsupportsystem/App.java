@@ -25,6 +25,7 @@ public class App {
 				loginDialog.showLoginDialog();
 				AppFrame appFrame = new AppFrame();
 				AppSingleton.getInstance().setAppFrame(appFrame);
+				AppSingleton.getInstance().getAppFrame().getMainDashboardPanel().getPatientListPanel().getPatientListScrollPane().getPatientList().setSelectedIndex(0);
 				AppSingleton.getInstance().setPrologConsultationApi(new PrologConsultationApi());
 				AppSingleton.getInstance().setTherapyCbReasonerApi(new CbReasonerApi("resources/data/therapy.csv"));
 				AppSingleton.getInstance().setProcedureCbReasonerApi(new CbReasonerApi("resources/data/procedure.csv"));

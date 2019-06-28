@@ -1,6 +1,8 @@
 package org.eok.medicalsupportsystem.view;
 
 import java.awt.Font;
+import java.util.Collections;
+import java.util.Comparator;
 
 import javax.swing.DefaultListModel;
 import javax.swing.DefaultListSelectionModel;
@@ -40,6 +42,13 @@ public class PatientList extends JXList implements org.eok.medicalsupportsystem.
 		Doctor doctor = AppSingleton.getInstance().getDoctor();
 		doctor.setPatients(this.doctorRepository.getPatients(doctor));
 
+		
+		Collections.sort(doctor.getPatients(), new Comparator<Patient>() {
+			public int compare(Patient o1, Patient o2) {
+				return o1.getLastName().compareToIgnoreCase(o2.getLastName());
+			};
+		});
+		
 		for (Patient patient : doctor.getPatients()) {
 			patient.attachObserver(this);
 			this.patientListModel.addElement(patient);

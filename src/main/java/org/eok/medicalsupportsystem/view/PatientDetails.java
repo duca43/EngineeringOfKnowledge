@@ -5,6 +5,7 @@ import java.awt.Font;
 import javax.swing.JPanel;
 
 import org.eok.medicalsupportsystem.controller.ChoosePatientAction;
+import org.eok.medicalsupportsystem.controller.RunTutorialAction;
 import org.eok.medicalsupportsystem.model.Patient;
 import org.jdesktop.swingx.JXButton;
 import org.jdesktop.swingx.JXLabel;
@@ -20,6 +21,10 @@ public class PatientDetails extends JPanel {
 	 */
 	public PatientDetails(Patient patient) {
 		setLayout(new MigLayout("", "[][grow][grow][grow][grow][grow][]", "[][][][][grow][]"));
+		
+		JXButton btnRunTutorial = new JXButton(new RunTutorialAction());
+		btnRunTutorial.setFont(new Font("Comic Sans MS", Font.BOLD, 18));
+		add(btnRunTutorial, "cell 1 0");
 		
 		JXButton btnChoosePatient = new JXButton(new ChoosePatientAction());
 		btnChoosePatient.setFont(new Font("Comic Sans MS", Font.BOLD, 18));
