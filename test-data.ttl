@@ -1,0 +1,90 @@
+@prefix eok:   <http://www.medical-support-system.eok.org#> .
+@prefix xsd:   <http://w3.org/2001/XMLSchema#> .
+
+eok:c3079f82-c9f3-4a1d-93c5-d7f901fd1262
+        a              eok:Doctor ;
+        eok:firstName  "Predrag"^^xsd:string ;
+        eok:heals      eok:1c632b19-eda1-43d0-b576-b496b0b9fd21 , eok:d34dc836-326d-4612-b1a4-e087c1514bb5 , eok:b1858f33-8138-414d-b72b-6b8ca423de50 , eok:454e929f-601d-41d9-91c0-bb211133c3a9 , eok:906ce0d5-4732-4435-908e-51cddfa963ee , eok:ba497c42-31b0-4439-819a-f5bea2050b87 , eok:19c8d91a-c593-46f7-a0e0-625dc1f1a328 , eok:c7a325dc-0fbf-4bf5-84b7-1a44c6f2684c , eok:1330875e-6374-4a04-82a6-2ae499f4a493 , eok:d0b908f5-3092-48bc-b333-310ae9a2f0d6 , eok:7b3e3d65-df4d-4af5-8978-eabcdf519c2b , eok:00782e35-8c76-4dca-83c3-6349bfcc924c , eok:1466d2e8-c1da-4385-8383-4e4ccefa63d0 , eok:e47d54a7-2e0a-4483-8ff8-2aee0a6e2c95 , eok:530b6473-4ca2-457d-ab0d-152c54965be3 , eok:62aa78bd-04bc-4a13-b71c-0092405be34b ;
+        eok:lastName   "Vukasinovic"^^xsd:string ;
+        eok:password   "123"^^xsd:string ;
+        eok:username   "pedja"^^xsd:string .
+
+eok:1c632b19-eda1-43d0-b576-b496b0b9fd21
+        a              eok:Patient ;
+        eok:age        "23"^^xsd:int ;
+        eok:firstName  "Zoran"^^xsd:string ;
+        eok:gender     "MALE"^^xsd:string ;
+        eok:lastName   "Zoranovic"^^xsd:string ;
+        eok:race       "BLACK"^^xsd:string .
+
+eok:ba497c42-31b0-4439-819a-f5bea2050b87
+        a              eok:Patient ;
+        eok:age        "34"^^xsd:int ;
+        eok:firstName  "Miljenko"^^xsd:string ;
+        eok:gender     "MALE"^^xsd:string ;
+        eok:lastName   "Miljenkovic"^^xsd:string ;
+        eok:race       "WHITE"^^xsd:string .
+
+eok:69b42c5c-edea-4d2b-b3f6-77efdc5c5bfb
+        a                        eok:Examination ;
+        eok:additionalProcedure  "adenoidektomija"^^xsd:string , "dodatne_evaluacije_i_konsultacije"^^xsd:string , "BERA_test"^^xsd:string , "laringoskopija"^^xsd:string ;
+        eok:date                 "2019-02-11"^^xsd:string ;
+        eok:disease              "laringitis"^^xsd:string ;
+        eok:note                 "Ustanovljeno je da pacijent boluje od laringitisa. Pacijentu se preporucuje da izvrsi laringoskopiju, kao i dodatne konsultacije i ispitivanja."^^xsd:string ;
+        eok:patient              eok:1c632b19-eda1-43d0-b576-b496b0b9fd21 ;
+        eok:symptom              "upala_grla"^^xsd:string , "upala_krajnika"^^xsd:string , "kasalj"^^xsd:string , "promuklost"^^xsd:string ;
+        eok:therapy              "ropivakain"^^xsd:string , "sevofluran"^^xsd:string , "gvaifenezin"^^xsd:string .
+
+eok:cb5545ed-87e5-4865-9e46-4701ea54d903
+        a                        eok:Examination ;
+        eok:additionalProcedure  "inhalacija"^^xsd:string ;
+        eok:date                 "2019-05-22"^^xsd:string ;
+        eok:disease              "prehlada"^^xsd:string ;
+        eok:note                 "Usled veoma ociglednih simptoma prehlade, pacijentu se prepisuje amoksicilin i preporucuje inhalacija."^^xsd:string ;
+        eok:patient              eok:ba497c42-31b0-4439-819a-f5bea2050b87 ;
+        eok:symptom              "povisena_temperatura"^^xsd:string , "kasalj"^^xsd:string , "zacepljenost_nosa"^^xsd:string , "curenje_iz_nosa"^^xsd:string , "kijavica"^^xsd:string ;
+        eok:therapy              "amoksicilin"^^xsd:string .
+
+eok:b8c57843-7689-4ea1-9e24-a985e789ef4f
+        a                        eok:Examination ;
+        eok:additionalProcedure  "arteriogram"^^xsd:string , "audiogram"^^xsd:string ;
+        eok:date                 "2017-03-14"^^xsd:string ;
+        eok:disease              "tinitus"^^xsd:string ;
+        eok:note                 "Ustanovljeno je da pacijent boluje od tinitusa. Pacijentu se preporucuje da izvrsi audiogram i arteriogram."^^xsd:string ;
+        eok:patient              eok:ba497c42-31b0-4439-819a-f5bea2050b87 ;
+        eok:symptom              "bol_u_uhu"^^xsd:string , "zujanje_u_uhu"^^xsd:string , "gubitak_sluha"^^xsd:string ;
+        eok:therapy              "jodoksin"^^xsd:string .
+
+eok:e47d54a7-2e0a-4483-8ff8-2aee0a6e2c95
+        a              eok:Patient ;
+        eok:age        "44"^^xsd:int ;
+        eok:firstName  "Dragan"^^xsd:string ;
+        eok:gender     "MALE"^^xsd:string ;
+        eok:lastName   "Dragutinovic"^^xsd:string ;
+        eok:race       "WHITE"^^xsd:string .
+
+eok:1c1da674-f784-46f0-8a07-ec40b9a49dd0
+        a                        eok:Examination ;
+        eok:additionalProcedure  "adenoidektomija"^^xsd:string ;
+        eok:date                 "2019-06-27"^^xsd:string ;
+        eok:disease              "adenoidne_vegetacije"^^xsd:string ;
+        eok:note                 "Na osnovu zapazenih simptoma, zakljuceno je da pacijent boluje od adenoidnih vegentacija, pa se pacijentu preporucuje prepisuje amoksicilin, kao i budesonoid.  Pacijent bi trebao hitno da izvrsi adenoidektomiju."^^xsd:string ;
+        eok:patient              eok:ba497c42-31b0-4439-819a-f5bea2050b87 ;
+        eok:symptom              "upala_grla"^^xsd:string , "upala_krajnika"^^xsd:string , "kasalj"^^xsd:string , "apneja"^^xsd:string ;
+        eok:therapy              "amoksicilin"^^xsd:string , "budesonoid"^^xsd:string .
+
+eok:530b6473-4ca2-457d-ab0d-152c54965be3
+        a              eok:Patient ;
+        eok:age        "56"^^xsd:int ;
+        eok:firstName  "Zdravko"^^xsd:string ;
+        eok:gender     "MALE"^^xsd:string ;
+        eok:lastName   "Zdravkovic"^^xsd:string ;
+        eok:race       "WHITE"^^xsd:string .
+
+eok:62aa78bd-04bc-4a13-b71c-0092405be34b
+        a              eok:Patient ;
+        eok:age        "18"^^xsd:int ;
+        eok:firstName  "Ivanka"^^xsd:string ;
+        eok:gender     "FEMALE"^^xsd:string ;
+        eok:lastName   "Ivanovic"^^xsd:string ;
+        eok:race       "HISPANIC"^^xsd:string .

@@ -1,0 +1,1 @@
+java -jar fuseki-server.jar --update --loc=eok /eok
